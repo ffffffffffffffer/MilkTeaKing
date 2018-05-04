@@ -1,0 +1,35 @@
+package com.milkteaking.core.app;
+
+import android.content.Context;
+
+/**
+ * @author TanJJ
+ * @time 2018/5/4 23:35
+ * @ProjectName MilkTeaKing
+ * @PackageName com.milkteaking.core.app
+ * @des 对全局信息进行存储
+ */
+
+public class MilkTea {
+
+    /**
+     * 开始对Configurator进行初始化
+     *
+     * @param context 全局的context
+     *
+     * @return 返回Configurator
+     */
+    public static Configurator init(Context context) {
+        Configurator.getInstance().withApplicationContext(context);
+        return Configurator.getInstance();
+    }
+
+    /**
+     * 获取全局唯一的context
+     *
+     * @return 返回全局的context
+     */
+    public static Context getApplicationContext() {
+        return Configurator.getInstance().getConfigurate(ConfigType.APPLICATION_CONTEXT);
+    }
+}
