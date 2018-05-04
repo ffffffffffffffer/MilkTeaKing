@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':milk-tea-core', ':milk-tea-ec', ':milk-tea-annotation', ':milk-tea-compiler', ':milk-tea-ui'
