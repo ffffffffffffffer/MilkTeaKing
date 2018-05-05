@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * @author TanJJ
@@ -32,6 +33,8 @@ class RestCreator {
         private static final Retrofit RETROFIT = new Retrofit.Builder()
                 .baseUrl(HOST_URL)
                 .client(OkHttpHolder.OK_HTTP_CLIENT)
+                // 添加拦截器,增加返回值为String的支持
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .build();
     }
 

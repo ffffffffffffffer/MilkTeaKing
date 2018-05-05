@@ -4,10 +4,13 @@ import com.milkteaking.core.net.callback.IError;
 import com.milkteaking.core.net.callback.IFailed;
 import com.milkteaking.core.net.callback.IRequest;
 import com.milkteaking.core.net.callback.ISuccess;
+import com.milkteaking.core.net.callback.RequestCallback;
 
 import java.util.WeakHashMap;
 
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * @author TanJJ
@@ -35,6 +38,53 @@ public class RestClient {
         mFailed = failed;
         mError = error;
         mRequest = request;
+    }
+
+    private void request(HttpMethod method) {
+        if (mRequest != null) {
+            mRequest.onRequestStart();
+        }
+        Call<String> call = null;
+        RestService restService = RestCreator.getRestService();
+        switch (method) {
+            case GET:
+                call = restService.get(url, params);
+                break;
+            case POST:
+                call = restService.post(url, params);
+                break;
+            case PUT:
+                call = restService.put(url, params);
+                break;
+            case DELETE:
+                call = restService.delete(url, params);
+                break;
+            default:
+                break;
+        }
+        if (call != null) {
+            call.enqueue(getCallback());
+        }
+    }
+
+    private Callback<String> getCallback() {
+        return new RequestCallback(mSuccess, mFailed, mError, mRequest);
+    }
+
+    public void get() {
+        request(HttpMethod.GET);
+    }
+
+    public void post() {
+        request(HttpMethod.POST);
+    }
+
+    public void put() {
+        request(HttpMethod.PUT);
+    }
+
+    public void delete() {
+        request(HttpMethod.DELETE);
     }
 
     public static RestClientBuilder builder() {

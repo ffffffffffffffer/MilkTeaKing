@@ -1,6 +1,5 @@
 package com.milkteaking.core.net;
 
-import java.util.Observer;
 import java.util.WeakHashMap;
 
 import okhttp3.MultipartBody;
@@ -33,7 +32,7 @@ public interface RestService {
 
     @FormUrlEncoded
     @POST
-    Call<String> post(@Url String url, @FieldMap WeakHashMap<String, Observer> params);
+    Call<String> post(@Url String url, @FieldMap WeakHashMap<String, Object> params);
 
     @POST
     Call<String> postRaw(@Url String url, @Body WeakHashMap<String, Object> params);
