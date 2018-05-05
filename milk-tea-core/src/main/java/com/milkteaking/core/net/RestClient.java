@@ -1,10 +1,14 @@
 package com.milkteaking.core.net;
 
+import android.content.Context;
+
 import com.milkteaking.core.net.callback.IError;
 import com.milkteaking.core.net.callback.IFailed;
 import com.milkteaking.core.net.callback.IRequest;
 import com.milkteaking.core.net.callback.ISuccess;
 import com.milkteaking.core.net.callback.RequestCallback;
+import com.milkteaking.core.ui.loader.LoaderStyle;
+import com.milkteaking.core.ui.loader.MilkTeaLoader;
 
 import java.util.WeakHashMap;
 
@@ -28,9 +32,11 @@ public class RestClient {
     private final IFailed mFailed;
     private final IError mError;
     private final IRequest mRequest;
+    private final Context mContext;
+    private final LoaderStyle mLoaderStyle;
 
     public RestClient(String url, WeakHashMap<String, Object> params, RequestBody requestBody, ISuccess success,
-                      IFailed failed, IError error, IRequest request) {
+                      IFailed failed, IError error, IRequest request, Context context, LoaderStyle style) {
         this.url = url;
         this.params = params;
         this.requestBody = requestBody;
@@ -38,6 +44,8 @@ public class RestClient {
         mFailed = failed;
         mError = error;
         mRequest = request;
+        mContext = context;
+        mLoaderStyle = style;
     }
 
     private void request(HttpMethod method) {
@@ -46,6 +54,11 @@ public class RestClient {
         }
         Call<String> call = null;
         RestService restService = RestCreator.getRestService();
+
+        if (mLoaderStyle != null) {
+            MilkTeaLoader.showLoader(mContext, mLoaderStyle);
+        }
+
         switch (method) {
             case GET:
                 call = restService.get(url, params);
@@ -68,7 +81,7 @@ public class RestClient {
     }
 
     private Callback<String> getCallback() {
-        return new RequestCallback(mSuccess, mFailed, mError, mRequest);
+        return new RequestCallback(mSuccess, mFailed, mError, mRequest, mLoaderStyle);
     }
 
     public void get() {

@@ -1,9 +1,12 @@
 package com.milkteaking.core.net;
 
+import android.content.Context;
+
 import com.milkteaking.core.net.callback.IError;
 import com.milkteaking.core.net.callback.IFailed;
 import com.milkteaking.core.net.callback.IRequest;
 import com.milkteaking.core.net.callback.ISuccess;
+import com.milkteaking.core.ui.loader.LoaderStyle;
 
 import java.util.WeakHashMap;
 
@@ -27,6 +30,8 @@ public class RestClientBuilder {
     private IFailed mFailed;
     private IError mError;
     private IRequest mRequest;
+    private LoaderStyle mLoaderStyle;
+    private Context mContext;
 
     public RestClientBuilder url(String url) {
         this.mUrl = url;
@@ -73,8 +78,20 @@ public class RestClientBuilder {
         return this;
     }
 
+    public RestClientBuilder loader(Context context, LoaderStyle style) {
+        mContext = context;
+        mLoaderStyle = style;
+        return this;
+    }
+
+    public RestClientBuilder loader(Context context) {
+        mContext = context;
+        mLoaderStyle = LoaderStyle.BallSpinFadeLoaderIndicator;
+        return this;
+    }
+
 
     public RestClient build() {
-        return new RestClient(mUrl, mParams, mRequestBody, mSuccess, mFailed, mError, mRequest);
+        return new RestClient(mUrl, mParams, mRequestBody, mSuccess, mFailed, mError, mRequest, mContext, mLoaderStyle);
     }
 }

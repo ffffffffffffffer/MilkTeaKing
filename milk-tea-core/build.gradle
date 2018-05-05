@@ -50,4 +50,6 @@ dependencies {
     compile 'com.blankj:utilcode:1.14.0'
     //Log依赖库
     compile 'com.orhanobut:logger:2.1.0'
+    //Loading框架(AVLoadingIndicatorView)
+    compile 'com.wang.avi:library:2.1.3'
 }

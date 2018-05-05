@@ -12,6 +12,7 @@ import com.milkteaking.core.net.callback.IError;
 import com.milkteaking.core.net.callback.IFailed;
 import com.milkteaking.core.net.callback.IRequest;
 import com.milkteaking.core.net.callback.ISuccess;
+import com.milkteaking.core.ui.loader.LoaderStyle;
 import com.milkteaking.core.util.log.MilkTeaLogger;
 
 public class MainActivity extends ProxyActivity {
@@ -25,12 +26,13 @@ public class MainActivity extends ProxyActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        test();
+        test();
     }
 
     private void test() {
         RestClient.builder()
                 .url("http://www.baidud.com")
+                .loader(this, LoaderStyle.PacmanIndicator)
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
