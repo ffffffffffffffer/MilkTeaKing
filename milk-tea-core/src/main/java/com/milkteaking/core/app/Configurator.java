@@ -33,7 +33,7 @@ public class Configurator {
         private static final Configurator CONFIGURATOR = new Configurator();
     }
 
-    public static Configurator getInstance() {
+    static Configurator getInstance() {
         return Holder.CONFIGURATOR;
     }
 

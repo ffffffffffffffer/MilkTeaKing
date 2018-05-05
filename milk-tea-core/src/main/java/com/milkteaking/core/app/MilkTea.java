@@ -32,4 +32,13 @@ public class MilkTea {
     public static Context getApplicationContext() {
         return Configurator.getInstance().getConfigurate(ConfigType.APPLICATION_CONTEXT);
     }
+
+    /**
+     * 获取key对应的value
+     * @param key 配置的enum
+     * @return 返回调用者希望的类型
+     */
+    public static <T> T getConfigurate(Enum<ConfigType> key) {
+        return Configurator.getInstance().getConfigurate(key);
+    }
 }
