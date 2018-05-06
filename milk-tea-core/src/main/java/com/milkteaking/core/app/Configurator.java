@@ -8,6 +8,8 @@ import com.joanzapata.iconify.Iconify;
 import java.util.ArrayList;
 import java.util.WeakHashMap;
 
+import okhttp3.Interceptor;
+
 /**
  * @author TanJJ
  * @time 2018/5/4 22:57
@@ -22,6 +24,10 @@ public class Configurator {
     private WeakHashMap<String, Object> CONFIGS = new WeakHashMap<>();
     // 储存文字图片
     private ArrayList<IconFontDescriptor> ICONS = new ArrayList<>();
+    // 用来存储拦截器
+    // 通过拦截器来模拟Request请求,不用后台服务器来搭建电商后台,当请求一个URL时,通过拦截器返回一段相应的json,
+    // 这就达到了Response的目的
+    private ArrayList<Interceptor> mInterceptors = new ArrayList<>();
 
     // 使用单例的方式调用
     private Configurator() {
@@ -107,5 +113,10 @@ public class Configurator {
         return this;
     }
 
+    public Configurator withInterceptor(Interceptor interceptor) {
+        mInterceptors.add(interceptor);
+        CONFIGS.put(ConfigType.INTERCEPTOR.name(), mInterceptors);
+        return this;
+    }
 
 }

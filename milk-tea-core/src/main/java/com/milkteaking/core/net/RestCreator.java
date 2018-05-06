@@ -3,12 +3,16 @@ package com.milkteaking.core.net;
 import com.milkteaking.core.app.ConfigType;
 import com.milkteaking.core.app.MilkTea;
 
+import java.util.ArrayList;
 import java.util.WeakHashMap;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+
+import static com.milkteaking.core.app.MilkTea.getConfigurate;
 
 /**
  * @author TanJJ
@@ -22,14 +26,28 @@ public class RestCreator {
 
     private static class OkHttpHolder {
         private static final int TIME_OUT = 60;
-        private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient
-                .Builder()
+        private static final OkHttpClient.Builder BUILDER = new OkHttpClient.Builder();
+        private static final OkHttpClient OK_HTTP_CLIENT = addInterceptor()
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .build();
+
+        private static OkHttpClient.Builder addInterceptor() {
+            ArrayList<Interceptor> interceptors = MilkTea.getConfigurate(ConfigType.INTERCEPTOR);
+
+            if (interceptors != null) {
+                for (Interceptor interceptor : interceptors) {
+                    if (interceptor != null) {
+                        BUILDER.addInterceptor(interceptor);
+                    }
+                }
+            }
+            return BUILDER;
+        }
+
     }
 
     private static class RetrofitHolder {
-        private static final String HOST_URL = MilkTea.getConfigurate(ConfigType.API_HOST);
+        private static final String HOST_URL = getConfigurate(ConfigType.API_HOST);
         private static final Retrofit RETROFIT = new Retrofit.Builder()
                 .baseUrl(HOST_URL)
                 .client(OkHttpHolder.OK_HTTP_CLIENT)
