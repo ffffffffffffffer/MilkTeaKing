@@ -18,7 +18,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  * @des RestService的构建(使用OkHttp和Retrofit结合使用, 通过Retrofit来创建RestService对象)
  */
 
-class RestCreator {
+public class RestCreator {
 
     private static class OkHttpHolder {
         private static final int TIME_OUT = 60;

@@ -31,7 +31,7 @@ public class MainActivity extends ProxyActivity {
 
     private void test() {
         RestClient.builder()
-                .url("http://www.baidud.com")
+                .url("http://192.168.0.100/aaa.apk")
                 .loader(this, LoaderStyle.PacmanIndicator)
                 .success(new ISuccess() {
                     @Override
@@ -68,6 +68,6 @@ public class MainActivity extends ProxyActivity {
                     }
                 })
                 .build()
-                .get();
+                .download();
     }
 }

@@ -7,6 +7,7 @@ import com.milkteaking.core.net.callback.IFailed;
 import com.milkteaking.core.net.callback.IRequest;
 import com.milkteaking.core.net.callback.ISuccess;
 import com.milkteaking.core.net.callback.RequestCallback;
+import com.milkteaking.core.net.download.DownloadHandler;
 import com.milkteaking.core.ui.loader.LoaderStyle;
 import com.milkteaking.core.ui.loader.MilkTeaLoader;
 
@@ -38,9 +39,16 @@ public class RestClient {
     private final Context mContext;
     private final LoaderStyle mLoaderStyle;
     private final File mFile;
+    private final String mDownload_dir;
+    private final String mExtension;
+    private final String mName;
 
     public RestClient(String url, WeakHashMap<String, Object> params, RequestBody requestBody, ISuccess success,
-                      IFailed failed, IError error, IRequest request, Context context, LoaderStyle style, File file) {
+                      IFailed failed, IError error, IRequest request, Context context, LoaderStyle style, File file,
+                      String download_dir,
+                      String extension,
+                      String name
+    ) {
         this.url = url;
         this.params = params;
         this.requestBody = requestBody;
@@ -51,6 +59,9 @@ public class RestClient {
         mContext = context;
         mLoaderStyle = style;
         mFile = file;
+        mDownload_dir = download_dir;
+        mExtension = extension;
+        mName = name;
     }
 
     private void request(HttpMethod method) {
@@ -128,6 +139,20 @@ public class RestClient {
 
     public void delete() {
         request(HttpMethod.DELETE);
+    }
+
+    public void download() {
+        new DownloadHandler(
+                url,
+                params,
+                mSuccess,
+                mFailed,
+                mError,
+                mRequest,
+                mDownload_dir,
+                mExtension,
+                mName)
+                .handleDownload();
     }
 
     public static RestClientBuilder builder() {
