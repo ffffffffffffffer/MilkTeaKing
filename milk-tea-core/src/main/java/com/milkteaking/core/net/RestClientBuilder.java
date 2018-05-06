@@ -8,6 +8,7 @@ import com.milkteaking.core.net.callback.IRequest;
 import com.milkteaking.core.net.callback.ISuccess;
 import com.milkteaking.core.ui.loader.LoaderStyle;
 
+import java.io.File;
 import java.util.WeakHashMap;
 
 import okhttp3.MediaType;
@@ -32,6 +33,7 @@ public class RestClientBuilder {
     private IRequest mRequest;
     private LoaderStyle mLoaderStyle;
     private Context mContext;
+    private File mFile;
 
     public RestClientBuilder url(String url) {
         this.mUrl = url;
@@ -90,8 +92,19 @@ public class RestClientBuilder {
         return this;
     }
 
+    public RestClientBuilder file(String name) {
+        mFile = new File(name);
+        return this;
+    }
+
+    public RestClientBuilder file(File file) {
+        mFile = file;
+        return this;
+    }
+
 
     public RestClient build() {
-        return new RestClient(mUrl, mParams, mRequestBody, mSuccess, mFailed, mError, mRequest, mContext, mLoaderStyle);
+        return new RestClient(mUrl, mParams, mRequestBody, mSuccess, mFailed, mError, mRequest, mContext,
+                mLoaderStyle, mFile);
     }
 }

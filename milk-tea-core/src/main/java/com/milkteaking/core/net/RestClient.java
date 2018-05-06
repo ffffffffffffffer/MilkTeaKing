@@ -10,8 +10,11 @@ import com.milkteaking.core.net.callback.RequestCallback;
 import com.milkteaking.core.ui.loader.LoaderStyle;
 import com.milkteaking.core.ui.loader.MilkTeaLoader;
 
+import java.io.File;
 import java.util.WeakHashMap;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,9 +37,10 @@ public class RestClient {
     private final IRequest mRequest;
     private final Context mContext;
     private final LoaderStyle mLoaderStyle;
+    private final File mFile;
 
     public RestClient(String url, WeakHashMap<String, Object> params, RequestBody requestBody, ISuccess success,
-                      IFailed failed, IError error, IRequest request, Context context, LoaderStyle style) {
+                      IFailed failed, IError error, IRequest request, Context context, LoaderStyle style, File file) {
         this.url = url;
         this.params = params;
         this.requestBody = requestBody;
@@ -46,6 +50,7 @@ public class RestClient {
         mRequest = request;
         mContext = context;
         mLoaderStyle = style;
+        mFile = file;
     }
 
     private void request(HttpMethod method) {
@@ -66,11 +71,22 @@ public class RestClient {
             case POST:
                 call = restService.post(url, params);
                 break;
+            case POST_RAW:
+                call = restService.postRaw(url, params);
+                break;
             case PUT:
                 call = restService.put(url, params);
                 break;
+            case PUT_RAW:
+                call = restService.putRaw(url, params);
+                break;
             case DELETE:
                 call = restService.delete(url, params);
+                break;
+            case UPLOAD:
+                RequestBody body = RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), mFile);
+                MultipartBody.Part part = MultipartBody.Part.createFormData("file", mFile.getName(), body);
+                call = restService.upload(url, part);
                 break;
             default:
                 break;
@@ -89,11 +105,25 @@ public class RestClient {
     }
 
     public void post() {
-        request(HttpMethod.POST);
+        if (requestBody == null) {
+            request(HttpMethod.POST);
+        } else {
+            if (!params.isEmpty()) {
+                throw new RuntimeException("Params must be null.");
+            }
+            request(HttpMethod.POST_RAW);
+        }
     }
 
     public void put() {
-        request(HttpMethod.PUT);
+        if (requestBody == null) {
+            request(HttpMethod.PUT);
+        } else {
+            if (!params.isEmpty()) {
+                throw new RuntimeException("Params must be null.");
+            }
+            request(HttpMethod.PUT_RAW);
+        }
     }
 
     public void delete() {
