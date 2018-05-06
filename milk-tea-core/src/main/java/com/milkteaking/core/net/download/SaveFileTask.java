@@ -42,9 +42,9 @@ public class SaveFileTask extends AsyncTask<Object, Void, File> {
         InputStream inputStream = responseBody.byteStream();
 
         // 设置默认的后缀名
-        if (download_dir == null || download_dir.equals("")) {
-            extension = "";
-        }
+//        if (download_dir == null || download_dir.equals("")) {
+//            extension = "";
+//        }
 
         if (name == null) {
             // 创建下载目录/文件名,IO读写后,返回下载路径
@@ -70,7 +70,7 @@ public class SaveFileTask extends AsyncTask<Object, Void, File> {
 
     private void autoInstall(File file) {
         if (file != null) {
-            if (FileUtil.getExtension(file.getPath()).equals(".apk")) {
+            if (FileUtil.getExtension(file.getPath()).equals("apk")) {
                 Intent intent = new Intent();
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setAction(Intent.ACTION_VIEW);

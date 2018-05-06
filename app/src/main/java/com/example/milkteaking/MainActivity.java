@@ -31,8 +31,9 @@ public class MainActivity extends ProxyActivity {
 
     private void test() {
         RestClient.builder()
-                .url("http://192.168.0.100/aaa.apk")
+                .url("http://192.168.0.102/bbbb.apk")
                 .loader(this, LoaderStyle.PacmanIndicator)
+                .extension("apk")
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
