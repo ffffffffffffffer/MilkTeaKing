@@ -5,6 +5,7 @@ import android.app.Application;
 import com.blankj.utilcode.util.Utils;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.milkteaking.core.app.MilkTea;
+import com.milkteaking.core.net.interceptor.DebugInterceptor;
 import com.milkteaking.ec.FontEcModule;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -27,6 +28,7 @@ public class MilkTeaApplication extends Application {
                 .withApiHost("http:127.0.0.1")
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
+                .withInterceptor(new DebugInterceptor("index", R.raw.test))
                 .configure();
         // 初始化AndroidUtilCode常用工具库
         Utils.init(this);
