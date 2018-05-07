@@ -52,4 +52,8 @@ dependencies {
     compile 'com.orhanobut:logger:2.1.0'
     //Loading框架(AVLoadingIndicatorView)
     compile 'com.wang.avi:library:2.1.3'
+    //RxJava框架引入
+    compile "io.reactivex.rxjava2:rxjava:2.1.0"
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 }

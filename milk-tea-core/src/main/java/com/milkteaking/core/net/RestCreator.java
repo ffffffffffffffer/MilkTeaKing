@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 import static com.milkteaking.core.app.MilkTea.getConfigurate;
@@ -53,6 +54,7 @@ public class RestCreator {
                 .client(OkHttpHolder.OK_HTTP_CLIENT)
                 // 添加拦截器,增加返回值为String的支持
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
@@ -78,5 +80,18 @@ public class RestCreator {
 
     static WeakHashMap<String, Object> getParams() {
         return ParamsHolder.PARAMS;
+    }
+
+    private static class RxRestService {
+        private static final RestRxService RX_REST_SERVICE = RetrofitHolder.RETROFIT.create(RestRxService.class);
+    }
+
+    /**
+     * 获取RestRxService对象
+     *
+     * @return 返回RestService对象
+     */
+    public static RestRxService getRestRxService() {
+        return RxRestService.RX_REST_SERVICE;
     }
 }
