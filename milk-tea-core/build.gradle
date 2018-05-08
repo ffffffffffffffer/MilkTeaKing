@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 25
@@ -73,4 +74,11 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.6'
     //Banner依赖
     compile 'com.bigkoo:convenientbanner:2.0.5'
+    //facebook的web形式的数据库查看库依赖
+    //Facebook推出的安卓APP网络诊断和数据监控的工具
+    compile 'com.facebook.stetho:stetho:1.5.0'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+    //GreenDao
+    compile 'org.greenrobot:greendao:3.2.2'
+    compile 'org.greenrobot:greendao-generator:3.2.2'
 }

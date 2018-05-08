@@ -1,5 +1,6 @@
 package com.milkteaking.core.net;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.milkteaking.core.app.ConfigType;
 import com.milkteaking.core.app.MilkTea;
 
@@ -30,6 +31,8 @@ public class RestCreator {
         private static final OkHttpClient.Builder BUILDER = new OkHttpClient.Builder();
         private static final OkHttpClient OK_HTTP_CLIENT = addInterceptor()
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+                // 添加stetho的网络拦截器
+                .addNetworkInterceptor(new StethoInterceptor())
                 .build();
 
         private static OkHttpClient.Builder addInterceptor() {

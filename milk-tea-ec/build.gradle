@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'org.greenrobot.greendao'//记得要在要使用的Module中加入插件,不然没法自动生成代码
 
 android {
     compileSdkVersion 25

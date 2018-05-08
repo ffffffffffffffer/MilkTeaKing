@@ -3,10 +3,12 @@ package com.example.milkteaking;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
+import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.milkteaking.core.app.MilkTea;
 import com.milkteaking.core.net.interceptor.DebugInterceptor;
 import com.milkteaking.ec.FontEcModule;
+import com.milkteaking.ec.database.DataBaseManager;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -34,6 +36,21 @@ public class MilkTeaApplication extends Application {
         Utils.init(this);
         // 初始化logger库
         initLogger();
+        // 初始化Stetho()
+        initStetho();
+        // 初始化数据库
+        initDataBase();
+    }
+
+    private void initDataBase() {
+        DataBaseManager.getInstance().init(this);
+    }
+
+    private void initStetho() {
+        Stetho.initialize(Stetho.newInitializerBuilder(this)
+                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                .build());
     }
 
     private void initLogger() {
