@@ -58,4 +58,6 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     //json框架依赖
     compile 'com.alibaba:fastjson:1.2.6'
+    //Banner依赖
+    compile 'com.bigkoo:convenientbanner:2.0.5'
 }
