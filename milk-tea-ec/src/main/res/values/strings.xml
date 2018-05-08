@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Ec</string>
     <string name="tool_bar_sign_up_title">注册</string>
+    <string name="tool_bar_sign_in_title">登录</string>
     <string name="sign_up_to_sign_in">已经注册了?请登录</string>
+    <string name="sign_in_to_sign_up">没注册?请注册</string>
 </resources>

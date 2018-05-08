@@ -47,6 +47,7 @@ public class SignUpFragment extends MilkTeaFragment {
     @OnClick(R2.id.sign_up_to_sign_in)
     public void SignUpToSignIn() {
         // 跳转到登陆界面
+        startWithPop(new SignInFragment());
     }
 
     private boolean checkForm() {
