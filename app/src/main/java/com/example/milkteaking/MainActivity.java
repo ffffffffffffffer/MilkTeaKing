@@ -18,7 +18,7 @@ import com.milkteaking.core.net.callback.ISuccess;
 import com.milkteaking.core.ui.loader.LoaderStyle;
 import com.milkteaking.core.ui.loader.MilkTeaLoader;
 import com.milkteaking.core.util.log.MilkTeaLogger;
-import com.milkteaking.ec.launcher.LauncherFragment;
+import com.milkteaking.ec.sign.SignUpFragment;
 
 import java.util.WeakHashMap;
 
@@ -33,7 +33,7 @@ public class MainActivity extends ProxyActivity {
     @Override
     public MilkTeaFragment getRootFragment() {
         // 返回根Fragment
-        return new LauncherFragment();
+        return new SignUpFragment();
     }
 
     @Override
