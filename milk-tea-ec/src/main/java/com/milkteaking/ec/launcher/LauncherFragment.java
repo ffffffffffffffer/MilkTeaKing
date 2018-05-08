@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.milkteaking.core.fragments.MilkTeaFragment;
+import com.milkteaking.core.launcher.LauncherScrollTag;
+import com.milkteaking.core.util.storage.Preference;
 import com.milkteaking.core.util.timer.BaseTimerTask;
 import com.milkteaking.core.util.timer.ITimerListener;
 import com.milkteaking.ec.R;
@@ -36,6 +39,18 @@ public class LauncherFragment extends MilkTeaFragment implements ITimerListener 
     @OnClick(R2.id.tv_launcher_timer)
     public void clickTvLauncherTimer() {
         // 点击进入主界面
+        checkIsShowScroll();
+    }
+
+    private void checkIsShowScroll() {
+        boolean flag = Preference.getAppFlag(LauncherScrollTag.HAS_FIRST_LAUNCHER_APP.name());
+        if (!flag) {
+            // 启动滚动界面
+            startWithPop(new LauncherScrollFragment());
+        } else {
+            // 检查用户是否登录过
+            ToastUtils.showShort("检查是否已经登录过");
+        }
     }
 
     @Override
@@ -70,6 +85,7 @@ public class LauncherFragment extends MilkTeaFragment implements ITimerListener 
                             mTimer.cancel();
                             mTimer = null;
                         }
+                        checkIsShowScroll();
                     }
                 }
             }

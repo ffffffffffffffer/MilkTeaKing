@@ -3,6 +3,7 @@ package com.example.milkteaking;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.milkteaking.core.activitys.ProxyActivity;
@@ -17,7 +18,7 @@ import com.milkteaking.core.net.callback.ISuccess;
 import com.milkteaking.core.ui.loader.LoaderStyle;
 import com.milkteaking.core.ui.loader.MilkTeaLoader;
 import com.milkteaking.core.util.log.MilkTeaLogger;
-import com.milkteaking.ec.launcher.LauncherScrollFragment;
+import com.milkteaking.ec.launcher.LauncherFragment;
 
 import java.util.WeakHashMap;
 
@@ -32,13 +33,18 @@ public class MainActivity extends ProxyActivity {
     @Override
     public MilkTeaFragment getRootFragment() {
         // 返回根Fragment
-        return new LauncherScrollFragment();
+        return new LauncherFragment();
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        test();
+        // 隐藏标题栏
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.hide();
+        }
+//        test();
 //        testRestRxClient();
 //        testRestRxCreate();
     }

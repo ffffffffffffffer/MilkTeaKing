@@ -8,6 +8,8 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.milkteaking.core.app.MilkTea;
 import com.milkteaking.core.fragments.MilkTeaFragment;
 import com.milkteaking.core.launcher.LauncherScrollHolderCreator;
+import com.milkteaking.core.launcher.LauncherScrollTag;
+import com.milkteaking.core.util.storage.Preference;
 import com.milkteaking.ec.R;
 
 import java.util.ArrayList;
@@ -53,6 +55,9 @@ public class LauncherScrollFragment extends MilkTeaFragment implements OnItemCli
 
     @Override
     public void onItemClick(int position) {
-
+        if (position == mList.size() - 1) {
+            Preference.setAppFlag(LauncherScrollTag.HAS_FIRST_LAUNCHER_APP.name(), true);
+            // 检查用户是否已经登录过,登录过就直接进入主页,否则登录界面
+        }
     }
 }
