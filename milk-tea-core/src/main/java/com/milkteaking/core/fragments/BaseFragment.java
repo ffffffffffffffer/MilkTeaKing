@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.milkteaking.core.activitys.ProxyActivity;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
@@ -15,10 +17,10 @@ import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
  * @time 2018/5/5 0:25
  * @ProjectName MilkTeaKing
  * @PackageName com.milkteaking.core.fragments
- * @des 基类Fragment,提供方法让子类实现
+ * @des 基类Fragment, 提供方法让子类实现
  */
 
-public abstract class BaseFragment extends SwipeBackFragment{
+public abstract class BaseFragment extends SwipeBackFragment {
     private Unbinder mBind;
 
     /**
@@ -27,6 +29,11 @@ public abstract class BaseFragment extends SwipeBackFragment{
      * @return 要加载的布局View或布局layout的id
      */
     public abstract Object getLayout();
+
+    /**
+     * 让子类绑定view
+     */
+    public abstract void onBindView(Bundle savedInstanceState, View view);
 
     @Nullable
     @Override
@@ -45,9 +52,14 @@ public abstract class BaseFragment extends SwipeBackFragment{
         // 绑定ButterKnife
         if (rootView != null) {
             mBind = ButterKnife.bind(this, rootView);
+            onBindView(savedInstanceState, rootView);
         }
         // 需要支持SwipeBack则这里必须调用toSwipeBackFragment(view);
         return attachToSwipeBack(rootView);
+    }
+
+    protected ProxyActivity getProxyActivity(){
+        return (ProxyActivity) _mActivity;
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.example.milkteaking;
 
+import android.os.Bundle;
+import android.view.View;
+
 import com.milkteaking.core.fragments.MilkTeaFragment;
 
 /**
@@ -14,5 +17,10 @@ public class RootFragment extends MilkTeaFragment {
     @Override
     public Object getLayout() {
         return R.layout.fragment_root;
+    }
+
+    @Override
+    public void onBindView(Bundle savedInstanceState, View view) {
+
     }
 }
