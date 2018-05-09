@@ -1,6 +1,7 @@
 package com.milkteaking.core.app;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
@@ -28,11 +29,14 @@ public class Configurator {
     // 通过拦截器来模拟Request请求,不用后台服务器来搭建电商后台,当请求一个URL时,通过拦截器返回一段相应的json,
     // 这就达到了Response的目的
     private ArrayList<Interceptor> mInterceptors = new ArrayList<>();
+    // 定义全局的Handler
+    private Handler mHandler = new Handler();
 
     // 使用单例的方式调用
     private Configurator() {
         // 将配置完成信息默认置为false
         CONFIGS.put(ConfigType.CONFIG_READY.name(), false);
+        CONFIGS.put(ConfigType.HANDLER.name(), mHandler);
     }
 
     private static class Holder {

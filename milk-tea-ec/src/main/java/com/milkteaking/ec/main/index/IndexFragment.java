@@ -1,6 +1,8 @@
 package com.milkteaking.ec.main.index;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.view.View;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.milkteaking.core.fragments.bottom.BottomItemFragment;
+import com.milkteaking.core.util.refresh.RefreshHandler;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
 
@@ -47,6 +50,21 @@ public class IndexFragment extends BottomItemFragment {
 
     @Override
     public void onBindView(Bundle savedInstanceState, View view) {
+        RefreshHandler refreshHandler = new RefreshHandler(mSrlIndex);
+    }
 
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        initRefresh();
+    }
+
+    private void initRefresh() {
+        mSrlIndex.setColorSchemeColors(
+                Color.RED,
+                Color.GREEN,
+                Color.BLUE
+        );
+        mSrlIndex.setProgressViewOffset(true, 120, 200);
     }
 }
