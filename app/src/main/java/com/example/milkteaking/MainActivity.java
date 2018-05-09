@@ -21,6 +21,7 @@ import com.milkteaking.core.util.log.MilkTeaLogger;
 import com.milkteaking.ec.launcher.ILauncherListener;
 import com.milkteaking.ec.launcher.LauncherFragment;
 import com.milkteaking.ec.launcher.LauncherTag;
+import com.milkteaking.ec.main.MilkTeaBottomFragment;
 import com.milkteaking.ec.sign.ISignListener;
 import com.milkteaking.ec.sign.SignInFragment;
 
@@ -167,7 +168,7 @@ public class MainActivity extends ProxyActivity implements ILauncherListener, IS
         switch (tag) {
             case SIGN:
                 ToastUtils.showShort("登录过了,直接进入首页");
-                startWithPop(new RootFragment());
+                startWithPop(new MilkTeaBottomFragment());
                 break;
             case NO_SIGH:
                 ToastUtils.showShort("没有登录,跳转到登陆界面");

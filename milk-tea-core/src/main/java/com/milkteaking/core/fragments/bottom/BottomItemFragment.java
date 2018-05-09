@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.milkteaking.core.fragments.MilkTeaFragment;
+import com.milkteaking.core.util.log.MilkTeaLogger;
 
 /**
  * @author TanJJ
@@ -28,17 +29,19 @@ public abstract class BottomItemFragment extends MilkTeaFragment implements View
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK || event.getAction() == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             int exitTime = 2000;
             if (System.currentTimeMillis() - mExitTime > exitTime) {
                 // 提示双击退出
-                ToastUtils.showShort("双击退出!");
+                ToastUtils.showShort("双击退出");
                 mExitTime = System.currentTimeMillis();
             } else {
-                // 退出程序
-                _mActivity.finish();
-                if (mExitTime != 0) {
-                    mExitTime = 0;
+                if (event.getAction() == KeyEvent.KEYCODE_UNKNOWN) {
+                    // 退出程序
+                    _mActivity.finish();
+                    if (mExitTime != 0) {
+                        mExitTime = 0;
+                    }
                 }
                 return true;
             }

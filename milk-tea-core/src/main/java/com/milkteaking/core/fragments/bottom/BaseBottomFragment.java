@@ -16,8 +16,8 @@ import com.milkteaking.core.app.MilkTea;
 import com.milkteaking.core.fragments.MilkTeaFragment;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import butterknife.BindView;
 import me.yokeyword.fragmentation.SupportFragment;
@@ -28,18 +28,18 @@ import me.yokeyword.fragmentation.SupportFragment;
  */
 
 public abstract class BaseBottomFragment extends MilkTeaFragment implements View.OnClickListener {
-    private final WeakHashMap<BottomTabBean, BottomItemFragment> ITEMS = new WeakHashMap<>();
+    private final LinkedHashMap<BottomTabBean, BottomItemFragment> ITEMS = new LinkedHashMap<>();
     private final ArrayList<BottomTabBean> BOTTOM_BEEN = new ArrayList<>();
     private final ArrayList<BottomItemFragment> ITEM_FRAGMENTS = new ArrayList<>();
     private int mIndexFragment;
     private int mCurrentFragment;
-    private int mClickColor = Color.parseColor("#95ff4444");
+    private int mClickColor = Color.RED;
 
     @BindView(R2.id.bottom_bar)
     LinearLayoutCompat mBottomBar;
 
 
-    public abstract WeakHashMap<BottomTabBean, BottomItemFragment> getItems(ItemBuilder builder);
+    public abstract LinkedHashMap<BottomTabBean, BottomItemFragment> getItems(ItemBuilder builder);
 
     public abstract int setIndexFragment();
 
@@ -55,7 +55,7 @@ public abstract class BaseBottomFragment extends MilkTeaFragment implements View
             mClickColor = setColor();
         }
 
-        WeakHashMap<BottomTabBean, BottomItemFragment> items = getItems(ItemBuilder.build());
+        LinkedHashMap<BottomTabBean, BottomItemFragment> items = getItems(ItemBuilder.build());
         // 将获取到的map储存起来
         ITEMS.putAll(items);
         // 遍历集合
@@ -92,13 +92,17 @@ public abstract class BaseBottomFragment extends MilkTeaFragment implements View
             if (i == mIndexFragment) {
                 bottom_icon_tv.setTextColor(mClickColor);
                 bottom_tv.setTextColor(mClickColor);
+            } else {
+                // 设置默认颜色
+                bottom_icon_tv.setTextColor(Color.GRAY);
+                bottom_tv.setTextColor(Color.GRAY);
             }
-            // 将item_delegate根据自己的长度转换成一个数组
-            // 为什么是SupportFragment数组呢?因为每一个Delegate都是SupportFragment的子类
-            SupportFragment[] supportFragments = ITEM_FRAGMENTS.toArray(new SupportFragment[size]);
-            // 加载多个fragment到bottom_bar_delegate_container中
-            loadMultipleRootFragment(R.id.bottom_bar, mIndexFragment, supportFragments);
         }
+        // 将item_delegate根据自己的长度转换成一个数组
+        // 为什么是SupportFragment数组呢?因为每一个Delegate都是SupportFragment的子类
+        SupportFragment[] supportFragments = ITEM_FRAGMENTS.toArray(new SupportFragment[size]);
+        // 加载多个fragment到bottom_bar_delegate_container中
+        loadMultipleRootFragment(R.id.bottom_bar_delegate_container, mIndexFragment, supportFragments);
     }
 
     @Override

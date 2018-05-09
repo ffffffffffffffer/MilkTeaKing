@@ -1,6 +1,6 @@
 package com.milkteaking.core.fragments.bottom;
 
-import java.util.WeakHashMap;
+import java.util.LinkedHashMap;
 
 /**
  * @author TanJJ
@@ -9,7 +9,7 @@ import java.util.WeakHashMap;
  */
 
 public class ItemBuilder {
-    private WeakHashMap<BottomTabBean, BottomItemFragment> items = new WeakHashMap<>();
+    private LinkedHashMap<BottomTabBean, BottomItemFragment> items = new LinkedHashMap<>();
 
     public static ItemBuilder build() {
         return new ItemBuilder();
@@ -19,11 +19,12 @@ public class ItemBuilder {
         items.put(bean, itemFragment);
     }
 
-    public void addItems(WeakHashMap<BottomTabBean, BottomItemFragment> itemFragmentWeakHashMap) {
+    public ItemBuilder addItems(LinkedHashMap<BottomTabBean, BottomItemFragment> itemFragmentWeakHashMap) {
         items = itemFragmentWeakHashMap;
+        return this;
     }
 
-    public WeakHashMap<BottomTabBean, BottomItemFragment> getItems() {
+    public LinkedHashMap<BottomTabBean, BottomItemFragment> getItems() {
         return items;
     }
 }
