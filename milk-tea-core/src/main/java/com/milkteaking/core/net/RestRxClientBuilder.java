@@ -30,6 +30,16 @@ public class RestRxClientBuilder {
         return this;
     }
 
+    public RestRxClientBuilder params(String key, Object value) {
+        mParams.put(key, value);
+        return this;
+    }
+
+    public RestRxClientBuilder params(WeakHashMap<String, Object> params) {
+        mParams.putAll(params);
+        return this;
+    }
+
     public RestRxClientBuilder raw(String json) {
         mRequestBody = RequestBody.create(MediaType.parse("application/json"), json);
         return this;

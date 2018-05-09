@@ -1,5 +1,6 @@
 package com.milkteaking.ec.launcher;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.milkteaking.core.util.timer.BaseTimerTask;
 import com.milkteaking.core.util.timer.ITimerListener;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
+import com.milkteaking.ec.sign.AccountManager;
+import com.milkteaking.ec.sign.IUserCheck;
 
 import java.text.MessageFormat;
 import java.util.Timer;
@@ -28,6 +31,17 @@ import butterknife.OnClick;
  */
 
 public class LauncherFragment extends MilkTeaFragment implements ITimerListener {
+
+
+    private ILauncherListener mLauncherListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ILauncherListener) {
+            mLauncherListener = (ILauncherListener) activity;
+        }
+    }
 
     // 倒计时的时间
     private int count = 5;
@@ -50,6 +64,22 @@ public class LauncherFragment extends MilkTeaFragment implements ITimerListener 
         } else {
             // 检查用户是否登录过
             ToastUtils.showShort("检查是否已经登录过");
+            AccountManager.isCheck(new IUserCheck() {
+                @Override
+                public void onSignIn() {
+                    if (mLauncherListener != null) {
+                        mLauncherListener.onLauncherFinish(LauncherTag.SIGN);
+                    }
+                }
+
+                @Override
+                public void onNoSignIn() {
+                    if (mLauncherListener != null) {
+                        mLauncherListener.onLauncherFinish(LauncherTag.NO_SIGH);
+                    }
+                }
+            });
+
         }
     }
 

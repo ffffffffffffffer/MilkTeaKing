@@ -1,5 +1,6 @@
 package com.milkteaking.ec.launcher;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,6 +12,8 @@ import com.milkteaking.core.launcher.LauncherScrollHolderCreator;
 import com.milkteaking.core.launcher.LauncherScrollTag;
 import com.milkteaking.core.util.storage.Preference;
 import com.milkteaking.ec.R;
+import com.milkteaking.ec.sign.AccountManager;
+import com.milkteaking.ec.sign.IUserCheck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,15 @@ public class LauncherScrollFragment extends MilkTeaFragment implements OnItemCli
 
     private ConvenientBanner<Integer> mConvenientBanner;
     private List<Integer> mList = new ArrayList<>();
+    private ILauncherListener mLauncherListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ILauncherListener) {
+            mLauncherListener = (ILauncherListener) activity;
+        }
+    }
 
     @Override
     public Object getLayout() {
@@ -58,6 +70,21 @@ public class LauncherScrollFragment extends MilkTeaFragment implements OnItemCli
         if (position == mList.size() - 1) {
             Preference.setAppFlag(LauncherScrollTag.HAS_FIRST_LAUNCHER_APP.name(), true);
             // 检查用户是否已经登录过,登录过就直接进入主页,否则登录界面
+            AccountManager.isCheck(new IUserCheck() {
+                @Override
+                public void onSignIn() {
+                    if (mLauncherListener != null) {
+                        mLauncherListener.onLauncherFinish(LauncherTag.SIGN);
+                    }
+                }
+
+                @Override
+                public void onNoSignIn() {
+                    if (mLauncherListener != null) {
+                        mLauncherListener.onLauncherFinish(LauncherTag.NO_SIGH);
+                    }
+                }
+            });
         }
     }
 }

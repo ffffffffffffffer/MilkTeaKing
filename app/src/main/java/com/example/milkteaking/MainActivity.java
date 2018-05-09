@@ -18,6 +18,10 @@ import com.milkteaking.core.net.callback.ISuccess;
 import com.milkteaking.core.ui.loader.LoaderStyle;
 import com.milkteaking.core.ui.loader.MilkTeaLoader;
 import com.milkteaking.core.util.log.MilkTeaLogger;
+import com.milkteaking.ec.launcher.ILauncherListener;
+import com.milkteaking.ec.launcher.LauncherFragment;
+import com.milkteaking.ec.launcher.LauncherTag;
+import com.milkteaking.ec.sign.ISignListener;
 import com.milkteaking.ec.sign.SignInFragment;
 
 import java.util.WeakHashMap;
@@ -28,12 +32,12 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends ProxyActivity {
+public class MainActivity extends ProxyActivity implements ILauncherListener, ISignListener {
 
     @Override
     public MilkTeaFragment getRootFragment() {
         // 返回根Fragment
-        return new SignInFragment();
+        return new LauncherFragment();
     }
 
     @Override
@@ -156,5 +160,33 @@ public class MainActivity extends ProxyActivity {
                         MilkTeaLoader.stopLoader();
                     }
                 });
+    }
+
+    @Override
+    public void onLauncherFinish(LauncherTag tag) {
+        switch (tag) {
+            case SIGN:
+                ToastUtils.showShort("登录过了,直接进入首页");
+                startWithPop(new RootFragment());
+                break;
+            case NO_SIGH:
+                ToastUtils.showShort("没有登录,跳转到登陆界面");
+                startWithPop(new SignInFragment());
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onSignInSuccess() {
+        ToastUtils.showShort("登录成功");
+        startWithPop(new RootFragment());
+    }
+
+    @Override
+    public void onSignUpSuccess() {
+        ToastUtils.showShort("注册成功");
+        startWithPop(new RootFragment());
     }
 }
