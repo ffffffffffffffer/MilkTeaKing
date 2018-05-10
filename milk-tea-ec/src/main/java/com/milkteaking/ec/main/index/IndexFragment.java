@@ -15,6 +15,7 @@ import com.milkteaking.core.fragments.bottom.BottomItemFragment;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
 import com.milkteaking.ec.constant.Constant;
+import com.milkteaking.ui.recycler.BaseDividerDecoration;
 import com.milkteaking.ui.recycler.PagingBean;
 import com.milkteaking.ui.refresh.RefreshHandler;
 
@@ -68,6 +69,8 @@ public class IndexFragment extends BottomItemFragment {
     private void initRecycler() {
         GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
         mRvIndex.setLayoutManager(manager);
+        // ------------使用框架的分隔线-------------
+        mRvIndex.addItemDecoration(BaseDividerDecoration.create(R.color.app_background, 3));
     }
 
     private void initRefresh() {

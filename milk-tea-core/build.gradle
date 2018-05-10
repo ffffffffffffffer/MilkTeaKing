@@ -83,6 +83,8 @@ dependencies {
     compile 'org.greenrobot:greendao-generator:3.2.2'
     //RecyclerView依赖
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.16'
+    //RecyclerView水平线依赖库(不知道作者为什么会选择这个库start星只有99,有可能是库小吧,才8kb)
+    compile 'com.choices.divider:RecyclerView_Divider:1.0.0'
     //图片处理----4.0以上才能使用注解自动生成GlideApp
     compile 'com.github.bumptech.glide:glide:4.0.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:4.0.0'
