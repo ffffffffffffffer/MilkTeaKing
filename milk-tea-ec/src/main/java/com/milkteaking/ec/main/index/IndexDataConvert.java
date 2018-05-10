@@ -66,16 +66,16 @@ public class IndexDataConvert extends DataCovert {
                 type = ItemType.TEXT_IMAGE;
             } else if (banners != null && banners.size() > 0) {
                 type = ItemType.BANNER;
+                // 遍历banners
+                int bannerSize = banners.size();
+                for (int m = 0; m < bannerSize; m++) {
+                    String url = banners.getString(m);
+                    bannerImages.add(url);
+                }
             }
-            // 遍历banners
-            int bannerSize = banners.size();
-            for (int m = 0; m < bannerSize; m++) {
-                String url = banners.getString(m);
-                bannerImages.add(url);
-            }
-
             // 添加数据
             MultipleItemBean bean = MultipleItemBean.builder()
+                    .setItemType(type)
                     .setField(MultipleField.TEXT.name(), text)
                     .setField(MultipleField.IMAGE_URL.name(), imageUrl)
                     .setField(MultipleField.BANNER.name(), bannerImages)
@@ -83,8 +83,7 @@ public class IndexDataConvert extends DataCovert {
                     .build();
 
             BEANS.add(bean);
-            return BEANS;
         }
-        return null;
+        return BEANS;
     }
 }

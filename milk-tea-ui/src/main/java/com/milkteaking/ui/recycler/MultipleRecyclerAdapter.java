@@ -66,12 +66,12 @@ public class MultipleRecyclerAdapter extends BaseMultiItemQuickAdapter<MultipleI
         int itemType = item.getItemType();
         switch (itemType) {
             case ItemType.TEXT:
-                String text = item.getFiled(MultipleField.TEXT);
+                String text = item.getFiled(MultipleField.TEXT.name());
                 // 设置text
                 helper.setText(R.id.text_single, text);
                 break;
             case ItemType.IMAGE:
-                String image = item.getFiled(MultipleField.IMAGE_URL);
+                String image = item.getFiled(MultipleField.IMAGE_URL.name());
                 AppCompatImageView imageView = helper.getView(R.id.img_single);
                 // 加载图片
                 GlideApp.with(mContext)
@@ -80,10 +80,10 @@ public class MultipleRecyclerAdapter extends BaseMultiItemQuickAdapter<MultipleI
                         .into(imageView);
                 break;
             case ItemType.TEXT_IMAGE:
-                text = item.getFiled(MultipleField.TEXT);
+                text = item.getFiled(MultipleField.TEXT.name());
                 // 设置text
                 helper.setText(R.id.tv_multiple, text);
-                image = item.getFiled(MultipleField.IMAGE_URL);
+                image = item.getFiled(MultipleField.IMAGE_URL.name());
                 imageView = helper.getView(R.id.img_multiple);
                 // 加载图片
                 GlideApp.with(mContext)
@@ -92,7 +92,7 @@ public class MultipleRecyclerAdapter extends BaseMultiItemQuickAdapter<MultipleI
                         .into(imageView);
                 break;
             case ItemType.BANNER:
-                ArrayList<String> banners = item.getFiled(MultipleField.BANNER);
+                ArrayList<String> banners = item.getFiled(MultipleField.BANNER.name());
                 ConvenientBanner<String> convenientBanners = helper.getView(R.id.banner_recycler);
                 // 设置ConvenientBanner
                 BannersCreator.setDefault(convenientBanners, banners, new com.bigkoo.convenientbanner.listener
@@ -111,7 +111,7 @@ public class MultipleRecyclerAdapter extends BaseMultiItemQuickAdapter<MultipleI
 
     @Override
     public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
-        return getData().get(position).getFiled(MultipleField.SPAN_SIZE);
+        return getData().get(position).getFiled(MultipleField.SPAN_SIZE.name());
     }
 
 }

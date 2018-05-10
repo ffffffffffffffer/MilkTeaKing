@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.milkteaking.core.fragments.bottom.BottomItemFragment;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
 import com.milkteaking.ec.constant.Constant;
+import com.milkteaking.ui.recycler.PagingBean;
 import com.milkteaking.ui.refresh.RefreshHandler;
 
 import butterknife.BindView;
@@ -52,14 +54,20 @@ public class IndexFragment extends BottomItemFragment {
 
     @Override
     public void onBindView(Bundle savedInstanceState, View view) {
-        mRefreshHandler = new RefreshHandler(mSrlIndex);
+        mRefreshHandler = RefreshHandler.create(mSrlIndex, mRvIndex, new IndexDataConvert(), new PagingBean());
     }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         initRefresh();
+        initRecycler();
         mRefreshHandler.firstPage(Constant.INDEX);
+    }
+
+    private void initRecycler() {
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
+        mRvIndex.setLayoutManager(manager);
     }
 
     private void initRefresh() {
