@@ -42,4 +42,8 @@ public class MultipleItemBean implements MultiItemEntity {
     public int getItemType() {
         return (int) mSoftReference.get().get(MultipleField.ITEM_TYPE.name());
     }
+
+    public static MultipleItemBeanBuilder builder() {
+        return new MultipleItemBeanBuilder();
+    }
 }

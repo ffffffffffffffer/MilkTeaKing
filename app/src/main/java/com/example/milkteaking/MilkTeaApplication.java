@@ -30,7 +30,7 @@ public class MilkTeaApplication extends Application {
                 .withApiHost("http:127.0.0.1")
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
-                .withInterceptor(new DebugInterceptor("index", R.raw.test))
+                .withInterceptor(new DebugInterceptor("index11111", R.raw.test))
                 .configure();
         // 初始化AndroidUtilCode常用工具库
         Utils.init(this);

@@ -11,9 +11,10 @@ import android.view.View;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.milkteaking.core.fragments.bottom.BottomItemFragment;
-import com.milkteaking.ui.refresh.RefreshHandler;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
+import com.milkteaking.ec.constant.Constant;
+import com.milkteaking.ui.refresh.RefreshHandler;
 
 import butterknife.BindView;
 
@@ -42,6 +43,7 @@ public class IndexFragment extends BottomItemFragment {
 
     @BindView(R2.id.index_itv_bull_horn)
     IconTextView mItvBullHornIndex;
+    private RefreshHandler mRefreshHandler;
 
     @Override
     public Object getLayout() {
@@ -50,13 +52,14 @@ public class IndexFragment extends BottomItemFragment {
 
     @Override
     public void onBindView(Bundle savedInstanceState, View view) {
-        RefreshHandler refreshHandler = new RefreshHandler(mSrlIndex);
+        mRefreshHandler = new RefreshHandler(mSrlIndex);
     }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         initRefresh();
+        mRefreshHandler.firstPage(Constant.INDEX);
     }
 
     private void initRefresh() {

@@ -1,6 +1,5 @@
 package com.milkteaking.ui.recycler;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 /**
@@ -14,10 +13,11 @@ public abstract class DataCovert {
     private String json;
 
     // 让子类实现数据转换,转换成需要的数据
-    public abstract LinkedHashMap<String, Object> convert();
+    public abstract LinkedList<MultipleItemBean> convert();
 
-    public void setJson(String data) {
+    public DataCovert setJson(String data) {
         json = data;
+        return this;
     }
 
     public String getJson() {

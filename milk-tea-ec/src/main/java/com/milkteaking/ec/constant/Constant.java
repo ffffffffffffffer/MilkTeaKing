@@ -7,7 +7,8 @@ package com.milkteaking.ec.constant;
  */
 
 public class Constant {
-    private static final String URL = "http://192.168.0.102/";
+    private static final String URL = "http://192.168.0.100/";
     public static final String SIGN_IN = URL.concat("latte_post_data.json");
     public static final String SIGN_UP = URL.concat("latte_post_data.json");
+    public static final String INDEX = URL.concat("latte_index.json");
 }
