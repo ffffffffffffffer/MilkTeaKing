@@ -1,4 +1,4 @@
-package com.milkteaking.core.util.refresh;
+package com.milkteaking.ui.refresh;
 
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;

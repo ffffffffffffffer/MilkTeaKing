@@ -81,4 +81,6 @@ dependencies {
     //GreenDao
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'org.greenrobot:greendao-generator:3.2.2'
+    //RecyclerView依赖
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.16'
 }

@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.milkteaking.core.fragments.bottom.BottomItemFragment;
-import com.milkteaking.core.util.refresh.RefreshHandler;
+import com.milkteaking.ui.refresh.RefreshHandler;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
 
