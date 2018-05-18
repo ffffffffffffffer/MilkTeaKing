@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.joanzapata.iconify.widget.IconTextView;
+import com.milkteaking.core.fragments.MilkTeaFragment;
 import com.milkteaking.core.fragments.bottom.BottomItemFragment;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
@@ -74,6 +75,8 @@ public class IndexFragment extends BottomItemFragment {
         mRvIndex.setLayoutManager(manager);
         // ------------使用框架的分隔线-------------
         mRvIndex.addItemDecoration(BaseDividerDecoration.create(R.color.app_background, 3));
+        MilkTeaFragment milkTeaFragment = getParentFragment(0);
+        mRvIndex.addOnItemTouchListener(new IndexItemClick(milkTeaFragment));
     }
 
     private void initRefresh() {
