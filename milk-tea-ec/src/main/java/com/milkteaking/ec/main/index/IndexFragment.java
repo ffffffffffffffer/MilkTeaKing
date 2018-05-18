@@ -20,6 +20,7 @@ import com.milkteaking.ui.recycler.PagingBean;
 import com.milkteaking.ui.refresh.RefreshHandler;
 
 import butterknife.BindView;
+import qiu.niorgai.StatusBarCompat;
 
 /**
  * @author TanJJ
@@ -56,6 +57,8 @@ public class IndexFragment extends BottomItemFragment {
     @Override
     public void onBindView(Bundle savedInstanceState, View view) {
         mRefreshHandler = RefreshHandler.create(mSrlIndex, mRvIndex, new IndexDataConvert(), new PagingBean());
+        // 沉侵式状态栏
+        StatusBarCompat.translucentStatusBar(getActivity(), true);
     }
 
     @Override

@@ -20,6 +20,7 @@ allprojects {
     repositories {
         jcenter()
         //BaseRecyclerViewAdapterHelper依赖时需要
+        //StatusBarCompat依赖时也需要
         maven { url "https://jitpack.io" }
     }
 }

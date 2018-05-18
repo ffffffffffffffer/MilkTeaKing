@@ -23,4 +23,10 @@ android {
 
 dependencies {
     compile project(':milk-tea-core')
+    //Google AutoValue
+    //provided是指编译的时候依赖这个jar包，但是最终打包的时候不打进去
+    //https://github.com/google/auto
+    //哪一个Module用就放在哪一个Module的gradle里面
+    provided "com.google.auto.value:auto-value-annotations:1.6"
+    annotationProcessor "com.google.auto.value:auto-value:1.6"
 }
