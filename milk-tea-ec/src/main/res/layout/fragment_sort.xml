@@ -6,14 +6,16 @@
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
+        android:background="@color/app_main"
         android:layout_height="?attr/actionBarSize">
 
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:textColor="@android:color/white"
             android:text="分类"
-            android:textSize="30sp"/>
+            android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 
     <!--将ToolBar下面分成左右两块-->

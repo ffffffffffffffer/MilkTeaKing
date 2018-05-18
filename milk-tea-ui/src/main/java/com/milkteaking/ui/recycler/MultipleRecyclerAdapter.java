@@ -2,13 +2,11 @@ package com.milkteaking.ui.recycler;
 
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.GridLayoutManager;
-import android.view.View;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.milkteaking.core.ui.image.GlideApp;
 import com.milkteaking.ui.R;
 import com.milkteaking.ui.banners.BannersCreator;
@@ -22,14 +20,7 @@ import java.util.List;
  * @des 多Item的RecyclerView的适配器
  */
 // 因为BaseMultiItemQuickAdapter这个是别人封装好的,本来的RecyclerView.Adapter只需要ViewHolder
-public class MultipleRecyclerAdapter extends BaseMultiItemQuickAdapter<MultipleItemBean, MultipleRecyclerAdapter
-        .ViewHolder> implements BaseQuickAdapter.SpanSizeLookup {
-
-    class ViewHolder extends BaseViewHolder {
-        public ViewHolder(View view) {
-            super(view);
-        }
-    }
+public class MultipleRecyclerAdapter extends BaseMultiItemQuickAdapter<MultipleItemBean,MultipleRecyclerViewHolder> implements BaseQuickAdapter.SpanSizeLookup {
 
     public MultipleRecyclerAdapter(List<MultipleItemBean> data) {
         super(data);
@@ -61,7 +52,7 @@ public class MultipleRecyclerAdapter extends BaseMultiItemQuickAdapter<MultipleI
 
 
     @Override
-    protected void convert(ViewHolder helper, MultipleItemBean item) {
+    protected void convert(MultipleRecyclerViewHolder helper, MultipleItemBean item) {
         // 解析数据
         int itemType = item.getItemType();
         switch (itemType) {

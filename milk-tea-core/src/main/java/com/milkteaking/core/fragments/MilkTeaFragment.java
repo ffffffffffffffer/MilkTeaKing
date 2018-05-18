@@ -11,7 +11,8 @@ package com.milkteaking.core.fragments;
 public abstract class MilkTeaFragment extends PermissionCheckerFragment {
 
     /**
-     * 提供方法让子类获取父Fragment
+     * 提供方法让子类获取父Fragment,这样做的好处就是即使是同辈关系
+     * 也可以在某个继承相同的父类的类中获取同辈的类
      * @param a 多余的,只不过是希望用getParentFragment这个方法名,所以重载
      * @return 限制只能返回MilkTeaFragment自己或子类
      */

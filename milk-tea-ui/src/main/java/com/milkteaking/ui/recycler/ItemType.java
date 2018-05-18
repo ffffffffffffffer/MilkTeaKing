@@ -14,4 +14,6 @@ public class ItemType {
     public static final int BANNER = 2;
 
     public static final int IMAGE = 3;
+
+    public static final int SORT_MENU_LIST = 4;
 }

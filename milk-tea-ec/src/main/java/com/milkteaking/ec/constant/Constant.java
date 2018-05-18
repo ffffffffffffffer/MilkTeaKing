@@ -11,4 +11,5 @@ public class Constant {
     public static final String SIGN_IN = URL.concat("latte_post_data.json");
     public static final String SIGN_UP = URL.concat("latte_post_data.json");
     public static final String INDEX = URL.concat("latte_index.json");
+    public static final String SORT_MENU_LIST = URL.concat("latte_sort_list.json");
 }
