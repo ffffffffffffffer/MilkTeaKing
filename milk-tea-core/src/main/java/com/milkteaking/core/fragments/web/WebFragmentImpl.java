@@ -6,6 +6,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.milkteaking.core.fragments.web.chrome.WebChromeClientImpl;
+import com.milkteaking.core.fragments.web.client.WebViewClientImpl;
 import com.milkteaking.core.fragments.web.route.RouteKeys;
 import com.milkteaking.core.fragments.web.route.Router;
 
@@ -42,7 +44,7 @@ public class WebFragmentImpl extends WebFragment implements IWebViewInitializer 
 
     @Override
     public IWebViewInitializer setInitializer() {
-        return null;
+        return this;
     }
 
     @Override
@@ -52,11 +54,11 @@ public class WebFragmentImpl extends WebFragment implements IWebViewInitializer 
 
     @Override
     public WebViewClient initWebViewClient() {
-        return null;
+        return new WebViewClientImpl(this);
     }
 
     @Override
     public WebChromeClient initWebChromeClient() {
-        return null;
+        return new WebChromeClientImpl();
     }
 }

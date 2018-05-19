@@ -39,6 +39,7 @@ public abstract class WebFragment extends MilkTeaFragment {
         if (arguments != null) {
             mUrl = arguments.getString(RouteKeys.URI.name());
         }
+        initWebView();
     }
 
     @SuppressLint("AddJavascriptInterface")
