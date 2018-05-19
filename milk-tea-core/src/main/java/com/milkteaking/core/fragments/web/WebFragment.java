@@ -70,6 +70,22 @@ public abstract class WebFragment extends MilkTeaFragment {
         }
     }
 
+    public WebView getWebView() {
+        if (mWebView != null) {
+            return isWebViewAvailable ? mWebView : null;
+        } else {
+            throw new RuntimeException("WebView is null!");
+        }
+    }
+
+    public String getUrl() {
+        if (mUrl != null) {
+            return mUrl;
+        } else {
+            throw new RuntimeException("Url is null!");
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
