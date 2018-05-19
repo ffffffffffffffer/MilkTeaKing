@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.main.sort.SortFragment;
+import com.milkteaking.ec.main.sort.content.SortContentFragment;
 import com.milkteaking.ui.recycler.ItemType;
 import com.milkteaking.ui.recycler.MultipleField;
 import com.milkteaking.ui.recycler.MultipleItemBean;
@@ -46,7 +47,7 @@ public class VerticalRecyclerAdapter extends MultipleRecyclerAdapter {
                 // 获取是否点击的tag
                 boolean isClick = item.getFiled(MultipleField.TAG.name());
                 // 获取整个layout的itemView
-                View itemView =helper.itemView;
+                View itemView = helper.itemView;
                 // 获取要显示文本的View
                 AppCompatTextView textView = helper.getView(R.id.tv_vertical_item_name);
                 // 获取指示view
@@ -72,6 +73,9 @@ public class VerticalRecyclerAdapter extends MultipleRecyclerAdapter {
                             notifyItemChanged(mPrePosition);
                             mPrePosition = currentPosition;
                             mCurrentId = getData().get(currentPosition).getFiled(MultipleField.ID.name());
+
+                            // 显示content内容
+                            showContent(mCurrentId);
                         }
 
                     }
@@ -99,5 +103,19 @@ public class VerticalRecyclerAdapter extends MultipleRecyclerAdapter {
             default:
                 break;
         }
+    }
+
+    private void showContent(int currentId) {
+        // 获取content对象
+        final SortContentFragment contentFragment = SortContentFragment.create(currentId);
+        switchFragment(contentFragment);
+    }
+
+    private void switchFragment(SortContentFragment contentFragment) {
+        SortContentFragment childFragment = mSortFragment.findChildFragment(SortContentFragment.class);
+        // 通过从父Delegate获取到的ContentDelegate来调用替换Fragment方法来切换传入的contentDelegate
+        // 就是自己以替换的方法重新加载自己,根据传入的id作为主要的刷新因素,起到刷新效果.
+        // 自己加载自己,不加入回退栈
+        childFragment.replaceFragment(contentFragment, false);
     }
 }

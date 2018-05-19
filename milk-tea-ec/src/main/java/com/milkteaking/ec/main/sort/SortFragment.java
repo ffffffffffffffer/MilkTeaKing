@@ -7,7 +7,7 @@ import android.view.View;
 import com.milkteaking.core.fragments.bottom.BottomItemFragment;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.main.sort.list.VerticalListFragment;
-import com.milkteaking.ec.main.sort.sort.SortContentFragment;
+import com.milkteaking.ec.main.sort.content.SortContentFragment;
 
 /**
  * @author TanJJ
