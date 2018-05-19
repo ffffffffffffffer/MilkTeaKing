@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.milkteaking.core.fragments.MilkTeaFragment;
 import com.milkteaking.core.net.RestClient;
 import com.milkteaking.core.net.callback.IFailed;
@@ -76,6 +78,12 @@ public class SortContentFragment extends MilkTeaFragment {
                         LinkedList<SectionBean> convert = new SortContentDataConvert().convert(response);
                         SortContentRecyclerAdapter adapter = new SortContentRecyclerAdapter(R.layout
                                 .item_section_content, R.layout.section_header, convert);
+                        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                            @Override
+                            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                                ToastUtils.showShort("点击了 " + position);
+                            }
+                        });
                         mRecyclerView.setAdapter(adapter);
                     }
                 })

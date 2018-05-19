@@ -44,6 +44,8 @@ public class SortContentRecyclerAdapter extends BaseSectionQuickAdapter<SectionB
         // 获取要显示的控件
         AppCompatImageView imageView = helper.getView(R.id.iv_section_content);
         AppCompatTextView content = helper.getView(R.id.tv_section_content);
+        // 增加点击事件
+        helper.addOnClickListener(R.id.iv_section_content);
         // 获取content的数据
         SectionContentItemBean itemBean = item.t;
         // 设置内容
@@ -52,6 +54,5 @@ public class SortContentRecyclerAdapter extends BaseSectionQuickAdapter<SectionB
         GlideApp.with(mContext)
                 .load(itemBean.getGoods_thumb())
                 .into(imageView);
-
     }
 }
