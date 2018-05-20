@@ -1,5 +1,6 @@
 package com.milkteaking.core.fragments.web;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -11,6 +12,7 @@ import android.webkit.WebView;
  */
 
 public class WebViewInitializer {
+    @SuppressLint("SetJavaScriptEnabled")
     public static WebView createWebView(WebView webView) {
         // [Api-19] 才能用这个方法,并且类名调用
         // 启用此标志以方便调试WebViews中的web布局和JavaScript代码
@@ -47,6 +49,9 @@ public class WebViewInitializer {
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        // 不开通是接收不到js传递过来的消息
+        // 开放JavaScript通道
+        settings.setJavaScriptEnabled(true);
 
         return webView;
     }

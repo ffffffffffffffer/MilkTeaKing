@@ -63,8 +63,10 @@ public abstract class WebFragment extends MilkTeaFragment {
                 // 设置Client
                 mWebView.setWebViewClient(iWebViewInitializer.initWebViewClient());
                 mWebView.setWebChromeClient(iWebViewInitializer.initWebChromeClient());
+                // 当原生与Web的JavaScript交互时会从LatteWebInterface找定义了注解@JavascriptInterface的类
+                // 然后根据自己定义的 latte.方法名() 来交互
                 // 支持javaScript
-                mWebView.addJavascriptInterface(MilkTeaWebInterface.craete(this), "milkTea");
+                mWebView.addJavascriptInterface(MilkTeaWebInterface.create(this), "milkTea");
                 isWebViewAvailable = true;
             } else {
                 throw new RuntimeException("IWebViewInitializer is null!");

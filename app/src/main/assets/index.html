@@ -11,5 +11,26 @@
 
 <h1>这是本地页面1</h1>
 <a href="second.html">跳转到页面2</a>
+
+<button id="test" onclick="callAndroid()">测试事件</button>
+<script type="text/javascript">
+    function nativeCall(){
+        alert('Android调用js代码,js调用(C/C++)原生代码');
+    }
+    function callAndroid(){
+            milkTea.event("{'action':'test'}");
+    }
+
+    <!--教程的这段话有问题,一直不能交互,用网上的简单列子可以交互-->
+    <!--document.getElementById('test').onclick = function(){-->
+        <!--var command = {-->
+            <!--'action':'test'-->
+        <!--};-->
+        <!--latte.event(Json.stringify(command));-->
+    <!--};-->
+
+
+</script>
+
 </body>
 </html>
