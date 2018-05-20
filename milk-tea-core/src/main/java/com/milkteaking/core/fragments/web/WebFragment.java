@@ -21,6 +21,7 @@ import java.lang.ref.WeakReference;
 public abstract class WebFragment extends MilkTeaFragment {
 
     private WebView mWebView;
+    private MilkTeaFragment mMilkTeaFragment;
     private static final ReferenceQueue<WebView> WEB_VIEW_REFERENCE_QUEUE = new ReferenceQueue<>();
     private String mUrl;
     // 只有初始化完后才是true,其余都是false
@@ -69,6 +70,14 @@ public abstract class WebFragment extends MilkTeaFragment {
                 throw new RuntimeException("IWebViewInitializer is null!");
             }
         }
+    }
+
+    public void setTopFragment(MilkTeaFragment fragment) {
+        mMilkTeaFragment = fragment;
+    }
+
+    public MilkTeaFragment getTopFragment() {
+        return mMilkTeaFragment;
     }
 
     public WebView getWebView() {

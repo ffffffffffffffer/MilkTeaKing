@@ -35,6 +35,7 @@ public class DiscoverFragment extends BottomItemFragment {
         super.onLazyInitView(savedInstanceState);
         // 加载WebFragmentImpl
         WebFragmentImpl webFragment = WebFragmentImpl.create(Constant.DISCOVERY_LOCAL);
+        webFragment.setTopFragment(this.getParentFragment(0));
         loadRootFragment(R.id.web_discovery_container, webFragment);
     }
 

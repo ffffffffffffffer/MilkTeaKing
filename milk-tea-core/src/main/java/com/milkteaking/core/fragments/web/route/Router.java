@@ -33,17 +33,21 @@ public class Router {
             callPhone(webFragment, url);
             return true;
         }
+        // -----------------------BugFix-------------------------------
+        // 全部从Web中跳转的都通过LatteDelegate加载,而不是在WebDelegate里加载
+        // -----------------------BugFix-------------------------------
         //获取WebDelegate的父类,可以根据这个判断当前的Url是以什么形式加载的
-        MilkTeaFragment parentFragment = webFragment.getParentFragment(0);
+        MilkTeaFragment parentFragment = webFragment.getTopFragment();
         WebFragmentImpl webFragmentImpl = WebFragmentImpl.create(url);
-        if (parentFragment == null) {
-            // 如果LatteDelegate为空,就说明当前这个url并不是通过点击界面上的发现的Tab按钮进入的,
-            // 那就通过WebDelegate来加载webDelegate
-            webFragment.start(webFragmentImpl);
-        } else {
-            //第一次加载Url到WebView时才会使用LatteDelegate来加载的
-            parentFragment.start(webFragmentImpl);
-        }
+        parentFragment.start(webFragmentImpl);
+//        if (parentFragment == null) {
+//            // 如果LatteDelegate为空,就说明当前这个url并不是通过点击界面上的发现的Tab按钮进入的,
+//            // 那就通过WebDelegate来加载webDelegate
+//            webFragment.start(webFragmentImpl);
+//        } else {
+//            //第一次加载Url到WebView时才会使用LatteDelegate来加载的
+//            parentFragment.start(webFragmentImpl);
+//        }
         return true;
     }
 
