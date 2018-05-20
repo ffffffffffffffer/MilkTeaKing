@@ -13,5 +13,6 @@ public enum ConfigType {
     APPLICATION_CONTEXT,
     CONFIG_READY,
     INTERCEPTOR,
-    HANDLER
+    HANDLER,
+    JAVASCRIPT_INTERFACE
 }

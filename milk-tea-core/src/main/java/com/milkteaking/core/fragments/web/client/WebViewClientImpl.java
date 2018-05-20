@@ -1,9 +1,11 @@
 package com.milkteaking.core.fragments.web.client;
 
+import android.graphics.Bitmap;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.milkteaking.core.fragments.web.IPageLoadListener;
 import com.milkteaking.core.fragments.web.WebFragment;
 import com.milkteaking.core.fragments.web.route.Router;
 import com.milkteaking.core.util.log.MilkTeaLogger;
@@ -16,6 +18,11 @@ import com.milkteaking.core.util.log.MilkTeaLogger;
 
 public class WebViewClientImpl extends WebViewClient {
     private final WebFragment mWebFragment;
+    private IPageLoadListener mPageLoadListener;
+
+    public void setPageLoadListener(IPageLoadListener pageLoadListener) {
+        mPageLoadListener = pageLoadListener;
+    }
 
     public WebViewClientImpl(WebFragment webFragment) {
         mWebFragment = webFragment;
@@ -35,5 +42,23 @@ public class WebViewClientImpl extends WebViewClient {
         MilkTeaLogger.e(WebViewClientImpl.class.getSimpleName(), url);
         //由原生跳转加载
         return Router.getInstance().handleWebUrl(mWebFragment, url);
+    }
+
+    //页面开始加载回调
+    @Override
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        super.onPageStarted(view, url, favicon);
+        if (mPageLoadListener != null) {
+            mPageLoadListener.onLoadStart();
+        }
+    }
+
+    //页面加载完回调
+    @Override
+    public void onPageFinished(WebView view, String url) {
+        super.onPageFinished(view, url);
+        if (mPageLoadListener != null) {
+            mPageLoadListener.onLoadEnd();
+        }
     }
 }

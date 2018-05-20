@@ -1,8 +1,9 @@
-package com.milkteaking.core.fragments.web.event;
+package com.example.milkteaking.event;
 
 import android.webkit.WebView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.milkteaking.core.fragments.web.event.Event;
 
 /**
  * @author TanJJ

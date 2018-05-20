@@ -5,6 +5,8 @@ import android.os.Handler;
 
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
+import com.milkteaking.core.fragments.web.event.Event;
+import com.milkteaking.core.fragments.web.event.EventManager;
 
 import java.util.ArrayList;
 import java.util.WeakHashMap;
@@ -120,6 +122,16 @@ public class Configurator {
     public Configurator withInterceptor(Interceptor interceptor) {
         mInterceptors.add(interceptor);
         CONFIGS.put(ConfigType.INTERCEPTOR.name(), mInterceptors);
+        return this;
+    }
+
+    public Configurator withJavaScript(String name) {
+        CONFIGS.put(ConfigType.JAVASCRIPT_INTERFACE.name(), name);
+        return this;
+    }
+
+    public Configurator withWebViewEvent(String key, Event value) {
+        EventManager.getInstance().addAction(key, value);
         return this;
     }
 

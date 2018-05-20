@@ -32,7 +32,7 @@ public class EventManager {
     public Event createEvent(@NonNull String action) {
         Event event = events.get(action);
         if (event == null) {
-            return new TestEvent();
+            return new UndefindEvent();
         }
         return event;
     }

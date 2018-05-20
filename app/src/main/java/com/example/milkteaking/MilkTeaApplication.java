@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.Utils;
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.milkteaking.core.app.MilkTea;
+import com.example.milkteaking.event.TestEvent;
 import com.milkteaking.core.net.interceptor.DebugInterceptor;
 import com.milkteaking.ec.FontEcModule;
 import com.milkteaking.ec.database.DataBaseManager;
@@ -31,6 +32,8 @@ public class MilkTeaApplication extends Application {
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
                 .withInterceptor(new DebugInterceptor("index11111", R.raw.test))
+                .withJavaScript("milkTea")
+                .withWebViewEvent("test", new TestEvent())
                 .configure();
         // 初始化AndroidUtilCode常用工具库
         Utils.init(this);

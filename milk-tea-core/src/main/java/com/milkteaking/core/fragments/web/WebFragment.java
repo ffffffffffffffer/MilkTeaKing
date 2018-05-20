@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.webkit.WebView;
 
+import com.milkteaking.core.app.ConfigType;
+import com.milkteaking.core.app.MilkTea;
 import com.milkteaking.core.fragments.MilkTeaFragment;
 import com.milkteaking.core.fragments.web.route.MilkTeaWebInterface;
 import com.milkteaking.core.fragments.web.route.RouteKeys;
@@ -66,7 +68,8 @@ public abstract class WebFragment extends MilkTeaFragment {
                 // 当原生与Web的JavaScript交互时会从LatteWebInterface找定义了注解@JavascriptInterface的类
                 // 然后根据自己定义的 latte.方法名() 来交互
                 // 支持javaScript
-                mWebView.addJavascriptInterface(MilkTeaWebInterface.create(this), "milkTea");
+                String name = MilkTea.getConfigurate(ConfigType.JAVASCRIPT_INTERFACE);
+                mWebView.addJavascriptInterface(MilkTeaWebInterface.create(this), name);
                 isWebViewAvailable = true;
             } else {
                 throw new RuntimeException("IWebViewInitializer is null!");

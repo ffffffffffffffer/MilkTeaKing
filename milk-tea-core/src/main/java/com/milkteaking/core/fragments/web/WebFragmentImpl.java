@@ -18,6 +18,12 @@ import com.milkteaking.core.fragments.web.route.Router;
  */
 
 public class WebFragmentImpl extends WebFragment implements IWebViewInitializer {
+    private IPageLoadListener mPageLoadListener;
+
+    public void setPageLoadListener(IPageLoadListener pageLoadListener) {
+        mPageLoadListener = pageLoadListener;
+    }
+
     @Override
     public Object getLayout() {
         return getWebView();
@@ -54,7 +60,9 @@ public class WebFragmentImpl extends WebFragment implements IWebViewInitializer 
 
     @Override
     public WebViewClient initWebViewClient() {
-        return new WebViewClientImpl(this);
+        WebViewClientImpl webViewClient = new WebViewClientImpl(this);
+        webViewClient.setPageLoadListener(mPageLoadListener);
+        return webViewClient;
     }
 
     @Override
