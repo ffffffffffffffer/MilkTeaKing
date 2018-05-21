@@ -1,7 +1,9 @@
 package com.milkteaking.core.fragments.web;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -14,6 +16,13 @@ import android.webkit.WebView;
 public class WebViewInitializer {
     @SuppressLint("SetJavaScriptEnabled")
     public static WebView createWebView(WebView webView) {
+        // Cookie相关的
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.setAcceptThirdPartyCookies(webView, true);
+        }
+        CookieManager.setAcceptFileSchemeCookies(true);
         // [Api-19] 才能用这个方法,并且类名调用
         // 启用此标志以方便调试WebViews中的web布局和JavaScript代码
         webView.setWebContentsDebuggingEnabled(true);

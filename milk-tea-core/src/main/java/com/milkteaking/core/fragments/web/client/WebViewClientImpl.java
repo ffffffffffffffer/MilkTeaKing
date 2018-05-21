@@ -1,14 +1,19 @@
 package com.milkteaking.core.fragments.web.client;
 
 import android.graphics.Bitmap;
+import android.text.TextUtils;
+import android.webkit.CookieManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.milkteaking.core.app.ConfigType;
+import com.milkteaking.core.app.MilkTea;
 import com.milkteaking.core.fragments.web.IPageLoadListener;
 import com.milkteaking.core.fragments.web.WebFragment;
 import com.milkteaking.core.fragments.web.route.Router;
 import com.milkteaking.core.util.log.MilkTeaLogger;
+import com.milkteaking.core.util.storage.Preference;
 
 /**
  * @author TanJJ
@@ -59,6 +64,22 @@ public class WebViewClientImpl extends WebViewClient {
         super.onPageFinished(view, url);
         if (mPageLoadListener != null) {
             mPageLoadListener.onLoadEnd();
+        }
+        // 同步cookie
+        syncCookie();
+    }
+
+    private void syncCookie() {
+        CookieManager cookieManager = CookieManager.getInstance();
+        String webHost = MilkTea.getConfigurate(ConfigType.WEB_HOST);
+        if (webHost != null) {
+            if (cookieManager.hasCookies()) {
+                String cookie = cookieManager.getCookie(webHost);
+                if (cookie != null && TextUtils.isEmpty(webHost)) {
+                    // 储存起来
+                    Preference.addCustomAppProfile("cookie", cookie);
+                }
+            }
         }
     }
 }

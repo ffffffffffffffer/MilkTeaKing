@@ -14,5 +14,6 @@ public enum ConfigType {
     CONFIG_READY,
     INTERCEPTOR,
     HANDLER,
-    JAVASCRIPT_INTERFACE
+    JAVASCRIPT_INTERFACE,
+    WEB_HOST
 }

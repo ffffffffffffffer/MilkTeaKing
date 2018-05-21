@@ -135,4 +135,8 @@ public class Configurator {
         return this;
     }
 
+    public Configurator withWegHost(String host) {
+        CONFIGS.put(ConfigType.WEB_HOST.name(), host);
+        return this;
+    }
 }
