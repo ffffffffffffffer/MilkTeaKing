@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
 
 import com.joanzapata.iconify.widget.IconTextView;
@@ -61,7 +62,7 @@ public class ShopFragment extends BottomItemFragment {
                 break;
         }
         // 更新RecyclerView状态
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
     }
 
 
@@ -88,6 +89,8 @@ public class ShopFragment extends BottomItemFragment {
                         LinkedList<MultipleItemBean> convert = new ShopCarDataConvert().setJson(response).convert();
                         mAdapter = new ShopCarAdapter(convert);
                         mRecyclerView.setAdapter(mAdapter);
+                        // 只要设置为false，就可以不显示动画了
+                        ((SimpleItemAnimator)mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
                     }
                 })
                 .failed(new IFailed() {
