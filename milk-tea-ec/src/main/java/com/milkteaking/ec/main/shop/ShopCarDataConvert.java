@@ -29,6 +29,7 @@ public class ShopCarDataConvert extends DataCovert {
             String thumb = jsonObject.getString("thumb");
             Integer id = jsonObject.getInteger("id");
             Float price = jsonObject.getFloat("price");
+            int count = jsonObject.getInteger("count");
             // 存放数据
             MultipleItemBean itemBean = MultipleItemBean.builder()
                     .setItemType(ItemType.SHOP_CAR_LIST)
@@ -37,6 +38,8 @@ public class ShopCarDataConvert extends DataCovert {
                     .setField(ShopCarFields.DESC.name(), desc)
                     .setField(ShopCarFields.THUMB.name(), thumb)
                     .setField(ShopCarFields.PRICE.name(), price)
+                    .setField(ShopCarFields.COUNT.name(), count)
+                    .setField(ShopCarFields.IS_SELECTED.name(), false)
                     .build();
             linkedList.add(itemBean);
         }

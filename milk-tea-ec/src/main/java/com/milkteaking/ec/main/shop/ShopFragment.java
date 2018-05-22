@@ -1,11 +1,14 @@
 package com.milkteaking.ec.main.shop;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.joanzapata.iconify.widget.IconTextView;
 import com.milkteaking.core.fragments.bottom.BottomItemFragment;
 import com.milkteaking.core.net.RestClient;
 import com.milkteaking.core.net.callback.IFailed;
@@ -19,6 +22,7 @@ import com.milkteaking.ui.recycler.MultipleItemBean;
 import java.util.LinkedList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author TanJJ
@@ -29,15 +33,42 @@ import butterknife.BindView;
 public class ShopFragment extends BottomItemFragment {
     @BindView(R2.id.rv_shop_cart)
     RecyclerView mRecyclerView;
+    @BindView(R2.id.icon_shop_cart_select_all)
+    IconTextView mSelectAll;
+    private ShopCarAdapter mAdapter;
 
     @Override
     public Object getLayout() {
         return R.layout.fragment_shop;
     }
 
+    @OnClick(R2.id.icon_shop_cart_select_all)
+    public void selectAll() {
+        int tag = (int) mSelectAll.getTag();
+        // 反选
+        switch (tag) {
+            case 0:
+                mSelectAll.setTextColor(ContextCompat.getColor(getContext(), R.color.app_main));
+                mAdapter.setSelectAll(true);
+                mSelectAll.setTag(1);
+                break;
+            case 1:
+                mSelectAll.setTextColor(Color.GRAY);
+                mAdapter.setSelectAll(false);
+                mSelectAll.setTag(0);
+                break;
+            default:
+                break;
+        }
+        // 更新RecyclerView状态
+        mAdapter.notifyDataSetChanged();
+    }
+
+
     @Override
     public void onBindView(Bundle savedInstanceState, View view) {
-
+        // 设置tag
+        mSelectAll.setTag(0);
     }
 
     @Override
@@ -55,8 +86,8 @@ public class ShopFragment extends BottomItemFragment {
                     @Override
                     public void onSuccess(String response) {
                         LinkedList<MultipleItemBean> convert = new ShopCarDataConvert().setJson(response).convert();
-                        ShopCarAdapter adapter = new ShopCarAdapter(convert);
-                        mRecyclerView.setAdapter(adapter);
+                        mAdapter = new ShopCarAdapter(convert);
+                        mRecyclerView.setAdapter(mAdapter);
                     }
                 })
                 .failed(new IFailed() {

@@ -34,5 +34,7 @@ public enum ShopCarFields {
     TITLE,
     DESC,
     PRICE,
-    THUMB
+    THUMB,
+    COUNT,
+    IS_SELECTED
 }
