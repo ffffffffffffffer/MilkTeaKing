@@ -20,7 +20,9 @@ import com.milkteaking.ec.R2;
 import com.milkteaking.ec.constant.Constant;
 import com.milkteaking.ui.recycler.MultipleItemBean;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,6 +43,44 @@ public class ShopFragment extends BottomItemFragment {
     @Override
     public Object getLayout() {
         return R.layout.fragment_shop;
+    }
+
+    @OnClick(R2.id.tv_top_shop_cart_remove_selected)
+    public void removeSelected() {
+        // 获取数据
+        List<MultipleItemBean> data = mAdapter.getData();
+        // 记录要被删除的Bean
+        ArrayList<MultipleItemBean> beanArrayList = new ArrayList<>();
+        // 记录循环的index
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        int size = data.size();
+        for (int i = 0; i < size; i++) {
+            MultipleItemBean multipleItemBean = data.get(i);
+            // 是否勾选上
+            boolean isSelected = multipleItemBean.getFiled(ShopCarFields.IS_SELECTED.name());
+            if (isSelected) {
+                // 存储Bean
+                beanArrayList.add(multipleItemBean);
+                // 存储index
+                linkedList.add(i);
+            }
+        }
+        for (int i = 0; i < beanArrayList.size(); i++) {
+            MultipleItemBean multipleItemBean = beanArrayList.get(i);
+            // 将整个Bean从list中删除
+            data.remove(multipleItemBean);
+            // 获取存储的index
+            Integer index = linkedList.get(i);
+            // 根据index更新Adapter
+            mAdapter.notifyItemRemoved(index);
+        }
+    }
+
+    @OnClick(R2.id.tv_top_shop_cart_clear)
+    public void clearAll() {
+        // 清除Adapter里所有的数据
+        mAdapter.getData().clear();
+        mAdapter.notifyDataSetChanged();
     }
 
     @OnClick(R2.id.icon_shop_cart_select_all)

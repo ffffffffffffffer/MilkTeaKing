@@ -40,6 +40,7 @@ public class ShopCarDataConvert extends DataCovert {
                     .setField(ShopCarFields.PRICE.name(), price)
                     .setField(ShopCarFields.COUNT.name(), count)
                     .setField(ShopCarFields.IS_SELECTED.name(), false)
+                    .setField(ShopCarFields.POSITION.name(), i)
                     .build();
             linkedList.add(itemBean);
         }
