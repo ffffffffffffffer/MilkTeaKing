@@ -14,4 +14,5 @@ public class Constant {
     public static final String SORT_CONTENT_LIST = URL.concat("latte_sort_content_list.json");
     public static final String DISCOVERY_LOCAL = "index.html";
     public static final String SHOP_INDEX = URL.concat("latte_shop_cart.json");
+    public static final String SHOP_COUNT = URL.concat("latte_shop_cart_count.json");
 }

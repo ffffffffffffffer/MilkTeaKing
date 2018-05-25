@@ -4,11 +4,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.support.v7.widget.ViewStubCompat;
 import android.view.View;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.milkteaking.core.fragments.bottom.BottomItemFragment;
 import com.milkteaking.core.net.RestClient;
@@ -33,12 +36,18 @@ import butterknife.OnClick;
  * @des 购物车Fragment
  */
 
-public class ShopFragment extends BottomItemFragment {
+public class ShopFragment extends BottomItemFragment implements IShopCarItemListener {
+
     @BindView(R2.id.rv_shop_cart)
     RecyclerView mRecyclerView;
     @BindView(R2.id.icon_shop_cart_select_all)
     IconTextView mSelectAll;
     private ShopCarAdapter mAdapter;
+    @BindView(R2.id.tv_shop_cart_total_price)
+    AppCompatTextView mTotalPrice;
+    @BindView(R2.id.stub_no_item)
+    ViewStubCompat mNoStub;
+    private boolean isStubShow;
 
     @Override
     public Object getLayout() {
@@ -74,6 +83,7 @@ public class ShopFragment extends BottomItemFragment {
             // 根据index更新Adapter
             mAdapter.notifyItemRemoved(index);
         }
+        checkShopCart();
     }
 
     @OnClick(R2.id.tv_top_shop_cart_clear)
@@ -81,6 +91,7 @@ public class ShopFragment extends BottomItemFragment {
         // 清除Adapter里所有的数据
         mAdapter.getData().clear();
         mAdapter.notifyDataSetChanged();
+        checkShopCart();
     }
 
     @OnClick(R2.id.icon_shop_cart_select_all)
@@ -128,9 +139,11 @@ public class ShopFragment extends BottomItemFragment {
                     public void onSuccess(String response) {
                         LinkedList<MultipleItemBean> convert = new ShopCarDataConvert().setJson(response).convert();
                         mAdapter = new ShopCarAdapter(convert);
+                        mAdapter.setShopCarItemListener(ShopFragment.this);
                         mRecyclerView.setAdapter(mAdapter);
                         // 只要设置为false，就可以不显示动画了
-                        ((SimpleItemAnimator)mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+                        ((SimpleItemAnimator) mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+                        checkShopCart();
                     }
                 })
                 .failed(new IFailed() {
@@ -147,5 +160,51 @@ public class ShopFragment extends BottomItemFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,
                 false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    private void checkShopCart() {
+        int size = mAdapter.getData().size();
+        if (size == 0) {
+            if (!isStubShow) {
+                isStubShow = true;
+                View inflate = mNoStub.inflate();
+                AppCompatTextView noItemText = (AppCompatTextView) inflate.findViewById(R.id.tv_no_item_text);
+                noItemText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtils.showShort("空购物车,请去选购.");
+                    }
+                });
+            }
+            mNoStub.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mNoStub.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onItemPrice(float totalPrice) {
+        setTotalPrice(totalPrice);
+    }
+
+    @Override
+    public void onSelected(float itemCount) {
+        setTotalPrice(itemCount);
+    }
+
+    @Override
+    public void onUnSelect(float itemCount) {
+        setTotalPrice(itemCount);
+    }
+
+    @Override
+    public void onRest() {
+        setTotalPrice((float) 0.0);
+    }
+
+    private void setTotalPrice(float price) {
+        mTotalPrice.setText(String.valueOf(price));
     }
 }

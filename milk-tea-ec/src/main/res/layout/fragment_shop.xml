@@ -58,8 +58,8 @@
         android:id="@+id/stub_no_item"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white"
+        android:layout_weight="8"
+        android:layout="@layout/stub_shop_cart_no_item"
         android:minHeight="50dp"/>
 
     <android.support.v7.widget.LinearLayoutCompat
