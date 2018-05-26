@@ -14,6 +14,8 @@ public interface IAlipayResultListener {
 
     void onPaying();
 
+    void onPayCancel();
+
     void onPayConnectError();
 
 }

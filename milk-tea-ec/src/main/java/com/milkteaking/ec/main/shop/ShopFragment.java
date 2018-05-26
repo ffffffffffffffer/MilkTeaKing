@@ -195,6 +195,8 @@ public class ShopFragment extends BottomItemFragment implements IShopCarItemList
 
     // 创建订单,注意,和支付时没有关系的
     private void createPayOrder() {
+        // 攒钻石API
+        // APId地址:http://app.api.zanzuanshi.com/Help
         String orderUrl = "http://app.api.zanzuanshi.com/api/v1/peyment";
         WeakHashMap<String, Object> orderParams = new WeakHashMap<>();
         orderParams.put("userid", "264392");
@@ -265,6 +267,11 @@ public class ShopFragment extends BottomItemFragment implements IShopCarItemList
 
     @Override
     public void onPaying() {
+
+    }
+
+    @Override
+    public void onPayCancel() {
 
     }
 
