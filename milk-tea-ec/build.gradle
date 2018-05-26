@@ -27,4 +27,5 @@ dependencies {
     compile project(':milk-tea-ui')
     //Butter knife依赖
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile files('libs/alipaySdk-20180403.jar')
 }

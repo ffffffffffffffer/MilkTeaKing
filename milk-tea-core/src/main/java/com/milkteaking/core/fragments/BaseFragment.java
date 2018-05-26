@@ -58,7 +58,7 @@ public abstract class BaseFragment extends SwipeBackFragment {
         return attachToSwipeBack(rootView);
     }
 
-    protected ProxyActivity getProxyActivity(){
+    public ProxyActivity getProxyActivity(){
         return (ProxyActivity) _mActivity;
     }
 

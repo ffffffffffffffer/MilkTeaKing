@@ -11,6 +11,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.ViewStubCompat;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.ToastUtils;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.milkteaking.core.fragments.bottom.BottomItemFragment;
@@ -21,11 +22,14 @@ import com.milkteaking.core.util.log.MilkTeaLogger;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
 import com.milkteaking.ec.constant.Constant;
+import com.milkteaking.ec.main.shop.pay.FastPay;
+import com.milkteaking.ec.main.shop.pay.IAlipayResultListener;
 import com.milkteaking.ui.recycler.MultipleItemBean;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,7 +40,7 @@ import butterknife.OnClick;
  * @des 购物车Fragment
  */
 
-public class ShopFragment extends BottomItemFragment implements IShopCarItemListener {
+public class ShopFragment extends BottomItemFragment implements IShopCarItemListener, IAlipayResultListener {
 
     @BindView(R2.id.rv_shop_cart)
     RecyclerView mRecyclerView;
@@ -52,6 +56,11 @@ public class ShopFragment extends BottomItemFragment implements IShopCarItemList
     @Override
     public Object getLayout() {
         return R.layout.fragment_shop;
+    }
+
+    @OnClick(R2.id.tv_shop_cart_pay)
+    public void clickPay() {
+        createPayOrder();
     }
 
     @OnClick(R2.id.tv_top_shop_cart_remove_selected)
@@ -184,6 +193,42 @@ public class ShopFragment extends BottomItemFragment implements IShopCarItemList
         }
     }
 
+    // 创建订单,注意,和支付时没有关系的
+    private void createPayOrder() {
+        String orderUrl = "http://app.api.zanzuanshi.com/api/v1/peyment";
+        WeakHashMap<String, Object> orderParams = new WeakHashMap<>();
+        orderParams.put("userid", "264392");
+        orderParams.put("amount", 0.01);
+        orderParams.put("comment", "测试支付");
+        orderParams.put("type", 1);
+        orderParams.put("orderType", 0);
+        orderParams.put("isanonymous", true);
+        orderParams.put("followeduser", 0);
+        // 请求支付
+        RestClient.builder()
+                .params(orderParams)
+                .url(orderUrl)
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        int orderId = JSON.parseObject(response).getInteger("result");
+                        // 进行具体支付
+                        FastPay.create(ShopFragment.this)
+                                .setAlipayResultListener(ShopFragment.this)
+                                .setOrderId(orderId)
+                                .beginPayDialog();
+                    }
+                })
+                .failed(new IFailed() {
+                    @Override
+                    public void onFailed(Throwable t) {
+
+                    }
+                })
+                .build()
+                .post();
+    }
+
     @Override
     public void onItemPrice(float totalPrice) {
         setTotalPrice(totalPrice);
@@ -206,5 +251,25 @@ public class ShopFragment extends BottomItemFragment implements IShopCarItemList
 
     private void setTotalPrice(float price) {
         mTotalPrice.setText(String.valueOf(price));
+    }
+
+    @Override
+    public void onPaySuccess() {
+
+    }
+
+    @Override
+    public void onPayFail() {
+
+    }
+
+    @Override
+    public void onPaying() {
+
+    }
+
+    @Override
+    public void onPayConnectError() {
+
     }
 }
