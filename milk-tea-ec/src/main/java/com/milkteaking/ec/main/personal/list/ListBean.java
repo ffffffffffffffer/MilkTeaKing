@@ -77,6 +77,10 @@ public class ListBean implements MultiItemEntity {
         }
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     @Override
     public int getItemType() {
         return ListItemType.ITEM_NORMAL;

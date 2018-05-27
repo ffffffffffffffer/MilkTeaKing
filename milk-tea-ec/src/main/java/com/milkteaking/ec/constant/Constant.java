@@ -15,4 +15,5 @@ public class Constant {
     public static final String DISCOVERY_LOCAL = "index.html";
     public static final String SHOP_INDEX = URL.concat("latte_shop_cart.json");
     public static final String SHOP_COUNT = URL.concat("latte_shop_cart_count.json");
+    public static final String PERSONAL_ALL_ORDER = URL.concat("latte_personal_all_order.json");
 }

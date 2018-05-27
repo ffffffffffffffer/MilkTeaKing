@@ -15,4 +15,6 @@ public enum MultipleField {
     BANNER,
     SPAN_SIZE,
     IMAGE_URL,
+    THUMB,
+    TITLE
 }
