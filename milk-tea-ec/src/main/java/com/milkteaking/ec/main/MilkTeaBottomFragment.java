@@ -8,6 +8,7 @@ import com.milkteaking.core.fragments.bottom.BottomTabBean;
 import com.milkteaking.core.fragments.bottom.ItemBuilder;
 import com.milkteaking.ec.main.discover.DiscoverFragment;
 import com.milkteaking.ec.main.index.IndexFragment;
+import com.milkteaking.ec.main.personal.PersonalFragment;
 import com.milkteaking.ec.main.shop.ShopFragment;
 import com.milkteaking.ec.main.sort.SortFragment;
 
@@ -27,7 +28,7 @@ public class MilkTeaBottomFragment extends BaseBottomFragment {
         items.put(new BottomTabBean("{fa-sort}", "分类"), new SortFragment());
         items.put(new BottomTabBean("{fa-compass}", "发现"), new DiscoverFragment());
         items.put(new BottomTabBean("{fa-shopping-cart}", "购物车"), new ShopFragment());
-        items.put(new BottomTabBean("{fa-user}", "我的"), new IndexFragment());
+        items.put(new BottomTabBean("{fa-user}", "我的"), new PersonalFragment());
         return builder.addItems(items).getItems();
     }
 
