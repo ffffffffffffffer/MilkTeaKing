@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.milkteaking.core.fragments.MilkTeaFragment;
+import com.milkteaking.core.fragments.bottom.BottomItemFragment;
 import com.milkteaking.core.net.RestClient;
 import com.milkteaking.core.net.callback.IFailed;
 import com.milkteaking.core.net.callback.ISuccess;
@@ -28,7 +28,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * @des 订单列表Fragment
  */
 
-public class OrderListFragment extends MilkTeaFragment {
+public class OrderListFragment extends BottomItemFragment {
     // 全部订单/待付款..等等它们显示的内容整体上是一致的,所有可以只使用一直显示方法,
     // 再用type来区分点击事件就能实现各种内容的显式
     private String mOrderType;

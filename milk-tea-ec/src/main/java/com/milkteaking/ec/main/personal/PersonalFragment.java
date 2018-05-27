@@ -12,6 +12,7 @@ import com.milkteaking.ec.main.personal.list.ListAdapter;
 import com.milkteaking.ec.main.personal.list.ListBean;
 import com.milkteaking.ec.main.personal.list.ListItemType;
 import com.milkteaking.ec.main.personal.order.OrderListFragment;
+import com.milkteaking.ec.main.personal.profile.UserProfileFragment;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,11 @@ public class PersonalFragment extends BottomItemFragment {
     public void clickPay() {
         mArgument.putString(ORDER_TYPE, "no_pay");
         startFragment();
+    }
+
+    @OnClick(R2.id.rl_user_profile)
+    public void clickUserProfile() {
+        getParentFragment(0).getSupportDelegate().start(new UserProfileFragment());
     }
 
     private void startFragment() {

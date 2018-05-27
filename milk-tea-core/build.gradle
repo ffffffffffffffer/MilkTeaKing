@@ -93,4 +93,6 @@ dependencies {
     compile('com.github.niorgai:StatusBarCompat:2.1.4', {
         exclude group: 'com.android.support'
     })
+    //圆形图片
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }
