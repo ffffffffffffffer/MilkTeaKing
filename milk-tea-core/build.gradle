@@ -95,4 +95,7 @@ dependencies {
     })
     //圆形图片
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    // 动态权限库
+    compile'com.github.hotchemi:permissionsdispatcher:2.4.0'
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
 }
