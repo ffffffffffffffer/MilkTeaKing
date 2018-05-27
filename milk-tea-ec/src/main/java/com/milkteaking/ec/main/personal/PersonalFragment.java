@@ -38,6 +38,12 @@ public class PersonalFragment extends BottomItemFragment {
         startFragment();
     }
 
+    @OnClick(R2.id.ll_pay)
+    public void clickPay() {
+        mArgument.putString(ORDER_TYPE, "no_pay");
+        startFragment();
+    }
+
     private void startFragment() {
         OrderListFragment orderListFragment = new OrderListFragment();
         orderListFragment.setArguments(mArgument);
