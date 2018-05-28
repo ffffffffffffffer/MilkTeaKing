@@ -34,6 +34,7 @@ public class UserProfileClickListener extends SimpleClickListener {
         switch (position) {
             case 0:
                 // 拍照和选择本地图片
+                mMilkTeaFragment.startCameraWithCheck();
                 break;
             case 1:
                 // 设置名字

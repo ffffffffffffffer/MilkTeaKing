@@ -98,4 +98,6 @@ dependencies {
     // 动态权限库
     compile'com.github.hotchemi:permissionsdispatcher:2.4.0'
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
+    // 图片裁剪(这个是包括原生代码的,还有一个轻量级的)
+    compile 'com.github.yalantis:ucrop:2.2.1-native'
 }

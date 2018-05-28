@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.milkteaking.core.ui.camera.MilkTeaCamera;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -27,7 +28,7 @@ public abstract class PermissionCheckerFragment extends BaseFragment {
     // 不是直接调用的方法
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void showCamera() {
-
+        MilkTeaCamera.start(this);
     }
 
     @OnShowRationale({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})

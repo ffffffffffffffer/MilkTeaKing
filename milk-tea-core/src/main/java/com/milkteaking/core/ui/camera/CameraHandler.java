@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.milkteaking.core.R;
 import com.milkteaking.core.fragments.PermissionCheckerFragment;
 import com.milkteaking.core.util.file.FileUtil;
@@ -30,8 +31,8 @@ public class CameraHandler implements View.OnClickListener {
     private final AlertDialog mAlertDialog;
     private final PermissionCheckerFragment mPermissionCheckerFragment;
 
-    public CameraHandler(AlertDialog alertDialog, PermissionCheckerFragment permissionCheckerFragment) {
-        mAlertDialog = alertDialog;
+    public CameraHandler(PermissionCheckerFragment permissionCheckerFragment) {
+        mAlertDialog = new AlertDialog.Builder(permissionCheckerFragment.getContext()).create();
         mPermissionCheckerFragment = permissionCheckerFragment;
     }
 
@@ -63,21 +64,29 @@ public class CameraHandler implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.photo_dialog_btn_take) {
-            takePhone();
+            takePhoto();
             mAlertDialog.cancel();
         } else if (v.getId() == R.id.photo_dialog_btn_native) {
-
+            pickPhoto();
             mAlertDialog.cancel();
         } else if (v.getId() == R.id.photo_dialog_btn_cancel) {
             mAlertDialog.cancel();
         }
     }
 
-    private void takePhone() {
+    private void pickPhoto() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        mPermissionCheckerFragment.startActivityForResult(Intent.createChooser(intent, "选择图片"), RequestCodes
+                .PICK_PHOTO);
+    }
+
+    private void takePhoto() {
         // 返回这种文件名 IMG_20180426_212108.jpg
         String photoName = getPhotoName();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(FileUtil.CAMERA_PHOTO_DIR, photoName);
+        File file = new File(mPermissionCheckerFragment.getContext().getExternalCacheDir(), photoName);
         // 兼容7.0以上的写法
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             ContentValues contentValues = new ContentValues(1);
@@ -87,7 +96,19 @@ public class CameraHandler implements View.OnClickListener {
             Uri uri = mPermissionCheckerFragment.getContext().getContentResolver().insert(MediaStore.Images.Media
                     .EXTERNAL_CONTENT_URI, contentValues);
             // 需要将uri路径转化为真实路径
+            File realFile = FileUtils.getFileByPath(FileUtil.getRealFilePath(mPermissionCheckerFragment.getContext
+                    (), uri));
+            // 将真实的file转换成uri
+            Uri realUri = Uri.fromFile(realFile);
+            // 储存这个uri
+            CameraImageBean.Instance().setUri(realUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        } else {
+            Uri uri = Uri.fromFile(file);
+            CameraImageBean.Instance().setUri(uri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         }
+        mPermissionCheckerFragment.startActivityForResult(intent, RequestCodes.TAKE_PHOTO);
     }
 
     private String getPhotoName() {
