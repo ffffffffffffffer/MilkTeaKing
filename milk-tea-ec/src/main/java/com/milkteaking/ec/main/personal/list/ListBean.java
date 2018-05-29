@@ -40,6 +40,11 @@ public class ListBean implements MultiItemEntity {
         return mImageUrl;
     }
 
+    @Override
+    public int getItemType() {
+        return mItemType;
+    }
+
     public static class Builder {
         private int mId;
         private int mItemType;
@@ -79,10 +84,5 @@ public class ListBean implements MultiItemEntity {
 
     public static Builder builder() {
         return new Builder();
-    }
-
-    @Override
-    public int getItemType() {
-        return ListItemType.ITEM_NORMAL;
     }
 }

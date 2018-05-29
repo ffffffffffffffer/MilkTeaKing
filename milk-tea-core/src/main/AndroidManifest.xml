@@ -13,7 +13,23 @@
         android:supportsRtl="true"
         >
         <activity android:name=".activitys.ProxyActivity"/>
-
+        <!--裁剪图片uCrop库需要静态声明-->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <!--7.0拍照后的路径不能直接使用-->
+        <!--FileProvider则是一种特殊的内容提供器，它使用了和内 容提供器类似的机制来对数据进行保护，
+            可以选择性地将封装过的 Uri 共享给外部，从而提高了应用的安全性。-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.milkteaking.core.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.milkteaking.ec.main.personal.profile;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
@@ -9,9 +10,15 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
 import com.milkteaking.core.fragments.MilkTeaFragment;
+import com.milkteaking.core.ui.image.GlideApp;
+import com.milkteaking.core.util.callback.CallbackManager;
+import com.milkteaking.core.util.callback.CallbackType;
+import com.milkteaking.core.util.callback.IGlobalCallback;
 import com.milkteaking.core.util.date.DateDialogUtil;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.main.personal.settings.NameFragment;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * @author TanJJ
@@ -33,6 +40,19 @@ public class UserProfileClickListener extends SimpleClickListener {
         ToastUtils.showShort(String.valueOf(position));
         switch (position) {
             case 0:
+                // 注册裁剪监听
+                CallbackManager.getInstance().addCallBack(CallbackType.NO_CROP, new IGlobalCallback<Uri>() {
+                    @Override
+                    public void executeCallback(Uri args) {
+                        if (args != null) {
+                            CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id
+                                    .img_arrow_avatar);
+                            GlideApp.with(mMilkTeaFragment.getContext())
+                                    .load(args)
+                                    .into(circleImageView);
+                        }
+                    }
+                });
                 // 拍照和选择本地图片
                 mMilkTeaFragment.startCameraWithCheck();
                 break;

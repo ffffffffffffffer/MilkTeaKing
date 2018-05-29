@@ -1,19 +1,18 @@
 package com.milkteaking.core.ui.camera;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.blankj.utilcode.util.FileUtils;
 import com.milkteaking.core.R;
 import com.milkteaking.core.fragments.PermissionCheckerFragment;
 import com.milkteaking.core.util.file.FileUtil;
@@ -86,23 +85,18 @@ public class CameraHandler implements View.OnClickListener {
         // 返回这种文件名 IMG_20180426_212108.jpg
         String photoName = getPhotoName();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(mPermissionCheckerFragment.getContext().getExternalCacheDir(), photoName);
+        File file = new File(mPermissionCheckerFragment.getActivity().getExternalCacheDir(), photoName);
+
+
         // 兼容7.0以上的写法
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            ContentValues contentValues = new ContentValues(1);
-            contentValues.put(MediaStore.Images.Media.DATA, file.getPath());
-            // 插入图片路径到数据库中,返回插入的路径uri
-            // 完整的内容的uri    content://media/external/images/media
-            Uri uri = mPermissionCheckerFragment.getContext().getContentResolver().insert(MediaStore.Images.Media
-                    .EXTERNAL_CONTENT_URI, contentValues);
-            // 需要将uri路径转化为真实路径
-            File realFile = FileUtils.getFileByPath(FileUtil.getRealFilePath(mPermissionCheckerFragment.getContext
-                    (), uri));
-            // 将真实的file转换成uri
-            Uri realUri = Uri.fromFile(realFile);
+            // 调用FileProvider的getUriForFile()方法将File象转换成一个封装过的Uri对象
+            // 从Android7.0系统开始，直接使用本地真实路径的Uri被认为是不安全的，会抛出 一个 FileUriExposedException 异常
+            Uri imageUri = FileProvider.getUriForFile(mPermissionCheckerFragment.getContext(), "com.milkteaking.core" +
+                    ".fileprovider", file);
             // 储存这个uri
-            CameraImageBean.Instance().setUri(realUri);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            CameraImageBean.Instance().setUri(imageUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         } else {
             Uri uri = Uri.fromFile(file);
             CameraImageBean.Instance().setUri(uri);
