@@ -27,6 +27,7 @@ import com.milkteaking.ec.sign.SignInFragment;
 
 import java.util.WeakHashMap;
 
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -189,5 +190,17 @@ public class MainActivity extends ProxyActivity implements ILauncherListener, IS
     public void onSignUpSuccess() {
         ToastUtils.showShort("注册成功");
         startWithPop(new RootFragment());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
     }
 }

@@ -10,6 +10,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // jcenter自动集成配置极光推送
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "7461d435de6d82d571233b92",
+                JPUSH_CHANNEL: "developer-default",
+        ]
     }
     buildTypes {
         release {
@@ -21,4 +31,6 @@ android {
 
 dependencies {
     compile project(':milk-tea-ec')
+    compile 'cn.jiguang.sdk:jpush:3.1.2'  // 此处以JPush 3.1.2 版本为例。
+    compile 'cn.jiguang.sdk:jcore:1.2.0'  // 此处以JCore 1.2.0 版本为例。
 }

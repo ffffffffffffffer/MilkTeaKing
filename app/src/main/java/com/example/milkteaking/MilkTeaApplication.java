@@ -3,10 +3,10 @@ package com.example.milkteaking;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
+import com.example.milkteaking.event.TestEvent;
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.milkteaking.core.app.MilkTea;
-import com.example.milkteaking.event.TestEvent;
 import com.milkteaking.core.net.interceptor.DebugInterceptor;
 import com.milkteaking.core.net.rx.AddCookieInterceptor;
 import com.milkteaking.ec.FontEcModule;
@@ -15,6 +15,8 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * @author TanJJ
@@ -47,6 +49,9 @@ public class MilkTeaApplication extends Application {
         initStetho();
         // 初始化数据库
         initDataBase();
+        // 极光推送初始化
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
     private void initDataBase() {
