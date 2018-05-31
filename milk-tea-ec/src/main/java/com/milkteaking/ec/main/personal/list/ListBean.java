@@ -1,5 +1,7 @@
 package com.milkteaking.ec.main.personal.list;
 
+import android.widget.CompoundButton;
+
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.milkteaking.core.fragments.MilkTeaFragment;
 
@@ -17,15 +19,17 @@ public class ListBean implements MultiItemEntity {
     private final String mValue;
     private final String mImageUrl;
     private final MilkTeaFragment mMilkTeaFragment;
+    private final CompoundButton.OnCheckedChangeListener mCheckedChangeListener;
 
     private ListBean(int id, int itemType, String text, String value, String imageUrl, MilkTeaFragment
-            milkTeaFragment) {
+            milkTeaFragment, CompoundButton.OnCheckedChangeListener checkedChangeListener) {
         mId = id;
         mItemType = itemType;
         mText = text;
         mValue = value;
         mImageUrl = imageUrl;
         mMilkTeaFragment = milkTeaFragment;
+        mCheckedChangeListener = checkedChangeListener;
     }
 
     public int getId() {
@@ -48,6 +52,10 @@ public class ListBean implements MultiItemEntity {
         return mMilkTeaFragment;
     }
 
+    public CompoundButton.OnCheckedChangeListener getCheckedChangeListener() {
+        return mCheckedChangeListener;
+    }
+
     @Override
     public int getItemType() {
         return mItemType;
@@ -60,6 +68,7 @@ public class ListBean implements MultiItemEntity {
         private String mValue;
         private String mImageUrl;
         private MilkTeaFragment mMilkTeaFragment;
+        private CompoundButton.OnCheckedChangeListener mCheckedChangeListener;
 
         public Builder setId(int id) {
             mId = id;
@@ -91,8 +100,13 @@ public class ListBean implements MultiItemEntity {
             return this;
         }
 
+        public Builder setCheckedChangeListener(CompoundButton.OnCheckedChangeListener checkedChangeListener) {
+            mCheckedChangeListener = checkedChangeListener;
+            return this;
+        }
+
         public ListBean build() {
-            return new ListBean(mId, mItemType, mText, mValue, mImageUrl, mMilkTeaFragment);
+            return new ListBean(mId, mItemType, mText, mValue, mImageUrl, mMilkTeaFragment, mCheckedChangeListener);
         }
     }
 

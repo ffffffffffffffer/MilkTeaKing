@@ -14,6 +14,7 @@ import com.milkteaking.ec.main.personal.list.ListBean;
 import com.milkteaking.ec.main.personal.list.ListItemType;
 import com.milkteaking.ec.main.personal.order.OrderListFragment;
 import com.milkteaking.ec.main.personal.profile.UserProfileFragment;
+import com.milkteaking.ec.main.personal.settings.SettingFragment;
 
 import java.util.ArrayList;
 
@@ -89,6 +90,7 @@ public class PersonalFragment extends BottomItemFragment {
                 .setId(2)
                 .setItemType(ListItemType.ITEM_NORMAL)
                 .setText("系统设置")
+                .setMilkTeaFragment(new SettingFragment())
                 .setValue("")
                 .build();
         // 存放到集合中

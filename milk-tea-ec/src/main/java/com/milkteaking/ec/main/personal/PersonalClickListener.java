@@ -28,16 +28,23 @@ public class PersonalClickListener extends SimpleClickListener {
         int id = listBean.getId();
         switch (id) {
             case 1:
-                MilkTeaFragment milkTeaFragment = listBean.getMilkTeaFragment();
-                if (mPersonalFragment != null) {
-                    mPersonalFragment.getParentFragment(0).getSupportDelegate().start(milkTeaFragment);
-                }
+                startFragment(listBean);
+                break;
+            case 2:
+                startFragment(listBean);
                 break;
             default:
                 break;
         }
 
 
+    }
+
+    private void startFragment(ListBean listBean) {
+        MilkTeaFragment milkTeaFragment = listBean.getMilkTeaFragment();
+        if (mPersonalFragment != null) {
+            mPersonalFragment.getParentFragment(0).getSupportDelegate().start(milkTeaFragment);
+        }
     }
 
     @Override

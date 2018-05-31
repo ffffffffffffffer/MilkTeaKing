@@ -1,5 +1,7 @@
 package com.milkteaking.ec.main.personal.list;
 
+import android.support.v7.widget.SwitchCompat;
+
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.milkteaking.core.ui.image.GlideApp;
@@ -31,6 +33,7 @@ public class ListAdapter extends BaseMultiItemQuickAdapter<ListBean, BaseViewHol
     private void initItemType() {
         addItemType(ListItemType.ITEM_NORMAL, R.layout.arrow_item_layout);
         addItemType(ListItemType.ITEM_AVATAR, R.layout.arrow_item_avatar);
+        addItemType(ListItemType.ITEM_SWITCH, R.layout.arrow_item_switch);
     }
 
     @Override
@@ -46,6 +49,13 @@ public class ListAdapter extends BaseMultiItemQuickAdapter<ListBean, BaseViewHol
                 GlideApp.with(mContext)
                         .load(imageUrl)
                         .into(avatarImageView);
+                break;
+            case ListItemType.ITEM_SWITCH:
+                helper.setText(R.id.tv_arrow_switch_text, item.getText());
+                SwitchCompat switchCompat = helper.getView(R.id.list_item_switch);
+                switchCompat.setChecked(true);
+                // 留给外面的调用者实现
+                switchCompat.setOnCheckedChangeListener(item.getCheckedChangeListener());
                 break;
             default:
                 break;
