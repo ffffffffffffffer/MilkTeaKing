@@ -10,12 +10,17 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
 import com.milkteaking.core.fragments.MilkTeaFragment;
+import com.milkteaking.core.net.RestClient;
+import com.milkteaking.core.net.callback.IFailed;
+import com.milkteaking.core.net.callback.ISuccess;
 import com.milkteaking.core.ui.image.GlideApp;
 import com.milkteaking.core.util.callback.CallbackManager;
 import com.milkteaking.core.util.callback.CallbackType;
 import com.milkteaking.core.util.callback.IGlobalCallback;
 import com.milkteaking.core.util.date.DateDialogUtil;
+import com.milkteaking.core.util.log.MilkTeaLogger;
 import com.milkteaking.ec.R;
+import com.milkteaking.ec.constant.Constant;
 import com.milkteaking.ec.main.personal.settings.NameFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,11 +50,55 @@ public class UserProfileClickListener extends SimpleClickListener {
                     @Override
                     public void executeCallback(Uri args) {
                         if (args != null) {
+                            // 更新图片
                             CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id
                                     .img_arrow_avatar);
                             GlideApp.with(mMilkTeaFragment.getContext())
                                     .load(args)
                                     .into(circleImageView);
+
+                            // 上传头像到服务器
+                            RestClient.builder()
+                                    .url(UploadConfig.UPLOAD_IMG)
+                                    .file(args.getPath())
+                                    .success(new ISuccess() {
+                                        @Override
+                                        public void onSuccess(String response) {
+                                            // 服务器返回上传的图片在服务器的路径
+                                            // 模拟服务器返回的数据有result节点和path
+                                            // String path = JSON.parseObject(response).getJSONObject("result")
+                                            // .getString("path");
+                                            String path = "模拟服务器返回的数据";
+                                            // 通知服务器更新信息
+                                            RestClient.builder()
+                                                    .url(Constant.PERSONAL_USER_PROFILE)
+                                                    .params("avatar", path)
+                                                    .success(new ISuccess() {
+                                                        @Override
+                                                        public void onSuccess(String response) {
+                                                            // 上传成功后服务器一般会返回最新的用户信息回来
+                                                            // 获取更新后的用户信息,然后更新本地数据库
+                                                            // 如果没有本地数据的app,每次打开app都请求API获取信息
+                                                        }
+                                                    })
+                                                    .failed(new IFailed() {
+                                                        @Override
+                                                        public void onFailed(Throwable t) {
+                                                            MilkTeaLogger.d("onUploadFailed", "上传数据出错了");
+                                                        }
+                                                    })
+                                                    .build()
+                                                    .post();
+                                        }
+                                    })
+                                    .failed(new IFailed() {
+                                        @Override
+                                        public void onFailed(Throwable t) {
+                                            MilkTeaLogger.d("onUploadFailed", "上传图片出错了");
+                                        }
+                                    })
+                                    .build()
+                                    .upload();
                         }
                     }
                 });

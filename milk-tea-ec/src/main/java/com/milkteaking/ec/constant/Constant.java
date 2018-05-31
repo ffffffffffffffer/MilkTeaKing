@@ -17,4 +17,5 @@ public class Constant {
     public static final String SHOP_COUNT = URL.concat("latte_shop_cart_count.json");
     public static final String PERSONAL_ALL_ORDER = URL.concat("latte_personal_all_order.json");
     public static final String PERSONAL_USER_PROFILE_AVATAR = URL.concat("avatar.jpg");
+    public static final String PERSONAL_USER_PROFILE= URL.concat("latte_user_profile.json");
 }
