@@ -8,6 +8,7 @@ import android.view.View;
 import com.milkteaking.core.fragments.bottom.BottomItemFragment;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
+import com.milkteaking.ec.main.personal.address.AddressFragment;
 import com.milkteaking.ec.main.personal.list.ListAdapter;
 import com.milkteaking.ec.main.personal.list.ListBean;
 import com.milkteaking.ec.main.personal.list.ListItemType;
@@ -82,9 +83,10 @@ public class PersonalFragment extends BottomItemFragment {
                 .setItemType(ListItemType.ITEM_NORMAL)
                 .setText("收货地址")
                 .setValue("")
+                .setMilkTeaFragment(new AddressFragment())
                 .build();
         ListBean listBean2 = ListBean.builder()
-                .setId(1)
+                .setId(2)
                 .setItemType(ListItemType.ITEM_NORMAL)
                 .setText("系统设置")
                 .setValue("")
@@ -96,5 +98,7 @@ public class PersonalFragment extends BottomItemFragment {
         // 创建Adapter
         ListAdapter listAdapter = new ListAdapter(arrayList);
         mRecyclerView.setAdapter(listAdapter);
+        // 监听点击事件
+        mRecyclerView.addOnItemTouchListener(new PersonalClickListener(this));
     }
 }

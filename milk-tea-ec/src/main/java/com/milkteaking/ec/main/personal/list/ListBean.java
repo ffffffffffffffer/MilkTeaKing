@@ -1,6 +1,7 @@
 package com.milkteaking.ec.main.personal.list;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.milkteaking.core.fragments.MilkTeaFragment;
 
 /**
  * @author TanJJ
@@ -15,13 +16,16 @@ public class ListBean implements MultiItemEntity {
     private final String mText;
     private final String mValue;
     private final String mImageUrl;
+    private final MilkTeaFragment mMilkTeaFragment;
 
-    private ListBean(int id, int itemType, String text, String value, String imageUrl) {
+    private ListBean(int id, int itemType, String text, String value, String imageUrl, MilkTeaFragment
+            milkTeaFragment) {
         mId = id;
         mItemType = itemType;
         mText = text;
         mValue = value;
         mImageUrl = imageUrl;
+        mMilkTeaFragment = milkTeaFragment;
     }
 
     public int getId() {
@@ -40,6 +44,10 @@ public class ListBean implements MultiItemEntity {
         return mImageUrl;
     }
 
+    public MilkTeaFragment getMilkTeaFragment() {
+        return mMilkTeaFragment;
+    }
+
     @Override
     public int getItemType() {
         return mItemType;
@@ -51,6 +59,7 @@ public class ListBean implements MultiItemEntity {
         private String mText;
         private String mValue;
         private String mImageUrl;
+        private MilkTeaFragment mMilkTeaFragment;
 
         public Builder setId(int id) {
             mId = id;
@@ -77,8 +86,13 @@ public class ListBean implements MultiItemEntity {
             return this;
         }
 
+        public Builder setMilkTeaFragment(MilkTeaFragment milkTeaFragment) {
+            mMilkTeaFragment = milkTeaFragment;
+            return this;
+        }
+
         public ListBean build() {
-            return new ListBean(mId, mItemType, mText, mValue, mImageUrl);
+            return new ListBean(mId, mItemType, mText, mValue, mImageUrl, mMilkTeaFragment);
         }
     }
 
