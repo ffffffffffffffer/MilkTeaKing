@@ -82,6 +82,7 @@ public class OrderListFragment extends BottomItemFragment {
     private void initRecycler() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addOnItemTouchListener(new OrderClickListener(this));
     }
 
     // 设置过度动画

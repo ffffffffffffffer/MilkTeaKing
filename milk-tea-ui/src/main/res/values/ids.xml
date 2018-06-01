@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 为了防止R文件中的id重复,就新建一个ids.xml文件,专门来生成id,这个id是不可能重复的,
+           因为它内部会进行一系列判断-->
+    <item name="star_count" type="id"/>
+    <item name="star_is_select" type="id"/>
+</resources>
