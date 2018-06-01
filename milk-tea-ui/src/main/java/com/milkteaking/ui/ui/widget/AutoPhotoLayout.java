@@ -32,11 +32,14 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
     // +号IconTextView的大小
     private float mIconSize;
     // 储存一行的View控件
-    private List<View> lineViews = new ArrayList<>();
+    private List<View> lineViews;
     // 图片属性
     private LayoutParams mParams;
     // 控制每个子只能初始化一次属性
     private boolean isOnceInitMeasure;
+    private boolean isOnceInitLayout;
+    // 储存行高
+    private static final List<Integer> LINE_HEIGHTS = new ArrayList<>();
     // 储存所有的View控件
     private static final List<List<View>> ALL_VIEWS = new ArrayList<>();
     private IconTextView mIconTextView;
@@ -61,6 +64,7 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
         mIconSize = typedArray.getDimension(R.styleable.camera_flow_layout_icon_size, 20);
         typedArray.recycle();
     }
+
     public void setMilkTeaFragment(MilkTeaFragment milkTeaFragment) {
         mMilkTeaFragment = milkTeaFragment;
     }
@@ -157,5 +161,100 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
             mParams = new LayoutParams(imageSideLen, imageSideLen);
             isOnceInitMeasure = true;
         }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        // 清理集合数据
+        ALL_VIEWS.clear();
+        LINE_HEIGHTS.clear();
+
+        if (!isOnceInitLayout) {
+            lineViews = new ArrayList<>();
+            isOnceInitLayout = true;
+        }
+        // 记录行宽高
+        int lineWidth = 0;
+        int lineHeight = 0;
+        // 获取当前宽度
+        int width = getWidth();
+
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = getChildAt(i);
+            // 得到测量后的子view的layoutParams
+            MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
+            // 获取子view占据的宽/高
+            int measuredWidth = view.getMeasuredWidth();
+            int measuredHeight = view.getMeasuredHeight();
+
+            // 判断是否需要换行
+            if ((measuredWidth + lineWidth + layoutParams.leftMargin + layoutParams.rightMargin) > (width +
+                    getPaddingLeft() + getPaddingRight())) {
+                // 叠加高度
+                lineHeight += measuredHeight + layoutParams.topMargin + layoutParams.bottomMargin;
+                // 重置宽度
+                lineWidth = 0;
+                // 添加进所有View的集合中
+                ALL_VIEWS.add(lineViews);
+                // 记录当前一行的View
+                LINE_HEIGHTS.add(lineHeight);
+                // 重置view集合
+                lineViews.clear();
+            }
+            // 获取行宽度
+            lineWidth += measuredWidth + layoutParams.leftMargin + layoutParams.rightMargin;
+            // 获取行高度
+            lineHeight = Math.max(lineHeight, lineHeight + layoutParams.topMargin + layoutParams.bottomMargin);
+            lineViews.add(view);
+        }
+        // 处理最后一行
+        // 不管是否是最后一个都添加进集合中
+        LINE_HEIGHTS.add(lineHeight);
+        ALL_VIEWS.add(lineViews);
+
+        // 获取第一个View的位置
+        int left = getPaddingLeft();
+        int top = getPaddingTop();
+        // 处理ALL_VIEWS集合中的每个View的位置摆放
+        int size = ALL_VIEWS.size();
+        for (int i = 0; i < size; i++) {
+            // 取出一行的集合
+            lineViews = ALL_VIEWS.get(i);
+            // 取出高度集合中对应索引的值
+            lineHeight = LINE_HEIGHTS.get(i);
+            // 遍历当前索引对应的行的集合
+            int lineSize = lineViews.size();
+            for (int m = 0; m < lineSize; m++) {
+                // 取出行里的View
+                View view = lineViews.get(m);
+                // 判断View的状态
+                if (view.getVisibility() == View.GONE) {
+                    // 如果它是隐藏的就跳过当前循环
+                    continue;
+                }
+                // 获取子View的参数
+                MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
+                // 设置子View的边距
+                int lc = left + layoutParams.leftMargin;
+                int tc = top + layoutParams.topMargin;
+                int rc = view.getMeasuredWidth() + mItemMargin;
+                int bc = lc + view.getMeasuredHeight();
+                // 为子view进行位置摆放
+                view.layout(lc, tc, rc, bc);
+                // 当计算完了child.layout后,把最后的宽度和边缘作为下一个view的left的开始
+                left = view.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+            }
+            // 把当前行的layout的getPaddingLeft赋给left
+            // 叠加宽度
+            left = getPaddingLeft();
+            // 叠加高度
+            top += lineHeight;
+        }
+        // 根据onMeasure里测量后的图片大小来设置IconTextView的大小
+        mIconTextView.setLayoutParams(mParams);
+        // 需要放开,当一行的View都计算了位置后,再重新创建另一个集合来存储下一行的View
+        isOnceInitLayout = false;
     }
 }
