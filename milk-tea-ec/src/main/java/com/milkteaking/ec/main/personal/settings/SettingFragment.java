@@ -8,11 +8,14 @@ import android.widget.CompoundButton;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.milkteaking.core.fragments.MilkTeaFragment;
+import com.milkteaking.core.util.callback.CallbackManager;
+import com.milkteaking.core.util.callback.CallbackType;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
 import com.milkteaking.ec.main.personal.list.ListAdapter;
 import com.milkteaking.ec.main.personal.list.ListBean;
 import com.milkteaking.ec.main.personal.list.ListItemType;
+import com.milkteaking.ec.main.personal.settings.about.AboutFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,7 @@ public class SettingFragment extends MilkTeaFragment {
         initData();
     }
 
+    @SuppressWarnings("unchecked")
     private void initData() {
         List<ListBean> list = new ArrayList<>();
         ListBean switchJPush = ListBean.builder()
@@ -53,8 +57,10 @@ public class SettingFragment extends MilkTeaFragment {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
                             ToastUtils.showShort("开启推送");
+                            CallbackManager.getInstance().getCallback(CallbackType.PUSH_OPEN).executeCallback(null);
                         } else {
                             ToastUtils.showShort("关闭推送");
+                            CallbackManager.getInstance().getCallback(CallbackType.PUSH_CLOSE).executeCallback(null);
                         }
                     }
                 })
@@ -64,7 +70,7 @@ public class SettingFragment extends MilkTeaFragment {
                 .setId(2)
                 .setText("关于")
                 .setItemType(ListItemType.ITEM_NORMAL)
-                .setMilkTeaFragment(null)
+                .setMilkTeaFragment(new AboutFragment())
                 .build();
         list.add(switchJPush);
         list.add(companyAbout);
@@ -76,5 +82,6 @@ public class SettingFragment extends MilkTeaFragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,
                 false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.addOnItemTouchListener(new SettingClickListener(this));
     }
 }

@@ -9,6 +9,9 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.milkteaking.core.app.MilkTea;
 import com.milkteaking.core.net.interceptor.DebugInterceptor;
 import com.milkteaking.core.net.rx.AddCookieInterceptor;
+import com.milkteaking.core.util.callback.CallbackManager;
+import com.milkteaking.core.util.callback.CallbackType;
+import com.milkteaking.core.util.callback.IGlobalCallback;
 import com.milkteaking.ec.FontEcModule;
 import com.milkteaking.ec.database.DataBaseManager;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -52,6 +55,33 @@ public class MilkTeaApplication extends Application {
         // 极光推送初始化
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+        // 依赖倒置
+        pushCallback();
+    }
+
+    private void pushCallback() {
+        // 依赖倒置,不同Module间通信
+        // 有三种方式: 反射/接口/消息机制
+        // 由于在Application中对推送设置开关比较合理,涉及到一个问题,就是不同Module之间的方法调用,用了全局的回调方法来实现
+        CallbackManager.getInstance().addCallBack(CallbackType.PUSH_OPEN, new IGlobalCallback() {
+            @Override
+            public void executeCallback(Object args) {
+                if (JPushInterface.isPushStopped(getApplicationContext())) {
+                    // 关闭了就开启
+                    JPushInterface.setDebugMode(true);
+                    JPushInterface.init(MilkTeaApplication.this);
+                }
+            }
+        });
+        CallbackManager.getInstance().addCallBack(CallbackType.PUSH_CLOSE, new IGlobalCallback() {
+            @Override
+            public void executeCallback(Object args) {
+                if (!JPushInterface.isPushStopped(getApplicationContext())) {
+                    //  开启就关闭
+                    JPushInterface.stopPush(getApplicationContext());
+                }
+            }
+        });
     }
 
     private void initDataBase() {
