@@ -10,6 +10,7 @@ import com.milkteaking.core.fragments.MilkTeaFragment;
 import com.milkteaking.core.ui.image.GlideApp;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
+import com.milkteaking.ui.ui.widget.AutoPhotoLayout;
 import com.milkteaking.ui.ui.widget.StarLayout;
 
 import butterknife.BindView;
@@ -28,6 +29,8 @@ public class OrderCommentFragment extends MilkTeaFragment {
     StarLayout mStarLayout;
     @BindView(R2.id.img_order_comment)
     AppCompatImageView mOrderCommentImageView;
+    @BindView(R2.id.custom_auto_photo_layout)
+    AutoPhotoLayout mAutoPhotoLayout;
 
     @OnClick(R2.id.top_tv_comment_commit)
     public void clickCommentCommit() {
@@ -52,6 +55,7 @@ public class OrderCommentFragment extends MilkTeaFragment {
     @Override
     public void onBindView(Bundle savedInstanceState, View view) {
         initImageView();
+        mAutoPhotoLayout.setMilkTeaFragment(this);
     }
 
     private void initImageView() {
