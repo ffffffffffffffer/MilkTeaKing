@@ -100,4 +100,6 @@ dependencies {
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
     // 图片裁剪(这个是包括原生代码的,还有一个轻量级的)
     compile 'com.github.yalantis:ucrop:2.2.1-native'
+    // 条形码可扩展扫描库
+    compile 'me.dm7.barcodescanner:zbar:1.9.8'
 }

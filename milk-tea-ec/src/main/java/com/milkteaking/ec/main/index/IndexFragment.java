@@ -21,6 +21,7 @@ import com.milkteaking.ui.recycler.PagingBean;
 import com.milkteaking.ui.refresh.RefreshHandler;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import qiu.niorgai.StatusBarCompat;
 
 /**
@@ -49,6 +50,11 @@ public class IndexFragment extends BottomItemFragment {
     @BindView(R2.id.index_itv_bull_horn)
     IconTextView mItvBullHornIndex;
     private RefreshHandler mRefreshHandler;
+
+    @OnClick(R2.id.index_itv_sao_yi_sao)
+    public void clickSaoYiSao() {
+        startWithScan(this.getParentFragment(0));
+    }
 
     @Override
     public Object getLayout() {

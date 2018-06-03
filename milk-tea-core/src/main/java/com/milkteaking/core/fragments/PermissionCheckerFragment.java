@@ -11,10 +11,10 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.milkteaking.core.ui.camera.CameraImageBean;
 import com.milkteaking.core.ui.camera.MilkTeaCamera;
 import com.milkteaking.core.ui.camera.RequestCodes;
+import com.milkteaking.core.ui.scanner.ScannerFragment;
 import com.milkteaking.core.util.callback.CallbackManager;
 import com.milkteaking.core.util.callback.CallbackType;
 import com.milkteaking.core.util.callback.IGlobalCallback;
-import com.milkteaking.core.util.log.MilkTeaLogger;
 import com.yalantis.ucrop.UCrop;
 
 import permissions.dispatcher.NeedsPermission;
@@ -33,6 +33,17 @@ import permissions.dispatcher.RuntimePermissions;
  */
 @RuntimePermissions
 public abstract class PermissionCheckerFragment extends BaseFragment {
+
+    // 不是直接调用的方法
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void starScan(MilkTeaFragment fragment) {
+        fragment.getSupportDelegate().startForResult(new ScannerFragment(), RequestCodes.SCAN);
+    }
+
+    // 这个才是提供给外界调用的方法
+    public void startWithScan(MilkTeaFragment fragment) {
+        PermissionCheckerFragmentPermissionsDispatcher.starScanWithCheck(this, fragment);
+    }
 
     // 不是直接调用的方法
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})
