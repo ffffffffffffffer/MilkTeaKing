@@ -3,6 +3,8 @@ package com.milkteaking.ui.ui.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.net.Uri;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -10,6 +12,8 @@ import android.view.View;
 
 import com.joanzapata.iconify.widget.IconTextView;
 import com.milkteaking.core.fragments.MilkTeaFragment;
+import com.milkteaking.core.glide.GlideOptions;
+import com.milkteaking.core.ui.image.GlideApp;
 import com.milkteaking.ui.R;
 
 import java.util.ArrayList;
@@ -23,6 +27,8 @@ import java.util.List;
 
 public class AutoPhotoLayout extends LinearLayoutCompat {
 
+    // 当前位置
+    private int mCurrentNum;
     // 最大图片数量
     private int mMaxCount;
     // 一行最多图片数量
@@ -46,6 +52,7 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
     private MilkTeaFragment mMilkTeaFragment;
     // +号图标
     private static final CharSequence PLUS_TEXT = "{fa-plus}";
+    private AppCompatImageView mTargetImageView;
 
     public AutoPhotoLayout(Context context) {
         this(context, null);
@@ -67,6 +74,29 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
 
     public void setMilkTeaFragment(MilkTeaFragment milkTeaFragment) {
         mMilkTeaFragment = milkTeaFragment;
+    }
+
+    public void onCrop(Uri uri) {
+        createImageView();
+        GlideApp.with(getContext())
+                .load(uri)
+                .apply(GlideOptions.OPTIONS)
+                .into(mTargetImageView);
+    }
+
+    private void createImageView() {
+        mTargetImageView = new AppCompatImageView(getContext());
+        mTargetImageView.setId(mCurrentNum);
+        mTargetImageView.setLayoutParams(mParams);
+        mTargetImageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        // 添加ImageView进集合
+        addView(mTargetImageView, mCurrentNum);
+        mCurrentNum++;
     }
 
     @Override
@@ -96,7 +126,6 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         // 获取规格大小和模式
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -138,7 +167,7 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
                 // 一直叠加宽度,直到大于父容器宽度
                 lineWidth += viewWidth;
                 // 得到最大的高度
-                lineHeight = Math.max(viewHeight, heightSize);
+                lineHeight = Math.max(viewHeight, lineHeight);
             }
 
             // 如果是最后一个,就
@@ -165,7 +194,6 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
         // 清理集合数据
         ALL_VIEWS.clear();
         LINE_HEIGHTS.clear();
@@ -190,16 +218,16 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
             int measuredHeight = view.getMeasuredHeight();
 
             // 判断是否需要换行
-            if ((measuredWidth + lineWidth + layoutParams.leftMargin + layoutParams.rightMargin) > (width +
-                    getPaddingLeft() + getPaddingRight())) {
+            if ((measuredWidth + lineWidth + layoutParams.leftMargin + layoutParams.rightMargin) > (width -
+                    getPaddingLeft() - getPaddingRight())) {
                 // 叠加高度
-                lineHeight += measuredHeight + layoutParams.topMargin + layoutParams.bottomMargin;
-                // 重置宽度
-                lineWidth = 0;
+                lineHeight = measuredHeight + layoutParams.topMargin + layoutParams.bottomMargin;
                 // 添加进所有View的集合中
                 ALL_VIEWS.add(lineViews);
                 // 记录当前一行的View
                 LINE_HEIGHTS.add(lineHeight);
+                // 重置宽度
+                lineWidth = 0;
                 // 重置view集合
                 lineViews.clear();
             }
@@ -239,12 +267,12 @@ public class AutoPhotoLayout extends LinearLayoutCompat {
                 // 设置子View的边距
                 int lc = left + layoutParams.leftMargin;
                 int tc = top + layoutParams.topMargin;
-                int rc = view.getMeasuredWidth() + mItemMargin;
+                int rc = lc + view.getMeasuredWidth() - mItemMargin;
                 int bc = lc + view.getMeasuredHeight();
                 // 为子view进行位置摆放
                 view.layout(lc, tc, rc, bc);
                 // 当计算完了child.layout后,把最后的宽度和边缘作为下一个view的left的开始
-                left = view.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+                left += view.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
             }
             // 把当前行的layout的getPaddingLeft赋给left
             // 叠加宽度
