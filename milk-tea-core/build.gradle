@@ -74,6 +74,9 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.6'
     //Banner依赖
     compile 'com.bigkoo:convenientbanner:2.0.5'
+    // ViewPager变换依赖
+    // convenientBanner需要transforms库
+    compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
     //facebook的web形式的数据库查看库依赖
     //Facebook推出的安卓APP网络诊断和数据监控的工具
     compile 'com.facebook.stetho:stetho:1.5.0'

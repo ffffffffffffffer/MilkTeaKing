@@ -6,6 +6,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
 import com.milkteaking.core.fragments.MilkTeaFragment;
 import com.milkteaking.ec.main.detail.IndexDetailsFragment;
+import com.milkteaking.ui.recycler.MultipleField;
+import com.milkteaking.ui.recycler.MultipleItemBean;
 
 /**
  * @author TanJJ
@@ -22,7 +24,9 @@ public class IndexItemClick extends SimpleClickListener {
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        mTeaFragment.start(IndexDetailsFragment.create());
+        MultipleItemBean bean = (MultipleItemBean) baseQuickAdapter.getData().get(position);
+        int id = bean.getFiled(MultipleField.ID.name());
+        mTeaFragment.start(IndexDetailsFragment.create(id));
     }
 
     @Override

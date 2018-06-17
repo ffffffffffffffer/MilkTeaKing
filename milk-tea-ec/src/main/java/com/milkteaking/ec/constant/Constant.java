@@ -20,4 +20,5 @@ public class Constant {
     public static final String PERSONAL_USER_PROFILE= URL.concat("latte_user_profile.json");
     public static final String PERSONAL_ADDRESS = URL.concat("latte_address.json");
     public static final String PERSONAL_SETTING_ABOUT = URL.concat("latte_setting_about.json");
+    public static final String INDEX_GOODS_INFO = URL.concat("latte_index_goods_info.json");
 }

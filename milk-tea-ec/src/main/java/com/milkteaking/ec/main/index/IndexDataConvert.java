@@ -76,6 +76,7 @@ public class IndexDataConvert extends DataCovert {
             // 添加数据
             MultipleItemBean bean = MultipleItemBean.builder()
                     .setItemType(type)
+                    .setField(MultipleField.ID.name(), goodsId)
                     .setField(MultipleField.TEXT.name(), text)
                     .setField(MultipleField.IMAGE_URL.name(), imageUrl)
                     .setField(MultipleField.BANNER.name(), bannerImages)
