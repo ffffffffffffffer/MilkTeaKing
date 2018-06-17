@@ -14,8 +14,11 @@ import com.milkteaking.core.net.callback.IFailed;
 import com.milkteaking.core.net.callback.ISuccess;
 import com.milkteaking.core.util.log.MilkTeaLogger;
 import com.milkteaking.ui.recycler.DataCovert;
+import com.milkteaking.ui.recycler.MultipleItemBean;
 import com.milkteaking.ui.recycler.MultipleRecyclerAdapter;
 import com.milkteaking.ui.recycler.PagingBean;
+
+import java.util.LinkedList;
 
 /**
  * @author TanJJ
@@ -28,6 +31,7 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener, Bas
     private final RecyclerView mRecyclerView;
     private final DataCovert mDataCovert;
     private final PagingBean mPagingBean;
+    private MultipleRecyclerAdapter mAdapter;
 
     private RefreshHandler(
             SwipeRefreshLayout swipeRefreshLayout,
@@ -85,11 +89,11 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener, Bas
                         mPagingBean.setTotal(total);
                         mPagingBean.setPageCount(page_size);
                         // 加载数据
-                        MultipleRecyclerAdapter adapter = MultipleRecyclerAdapter.create(mDataCovert
+                        mAdapter = MultipleRecyclerAdapter.create(mDataCovert
                                 .setJson(response));
                         // 设置加载更多监听
-                        adapter.setOnLoadMoreListener(RefreshHandler.this, mRecyclerView);
-                        mRecyclerView.setAdapter(adapter);
+                        mAdapter.setOnLoadMoreListener(RefreshHandler.this, mRecyclerView);
+                        mRecyclerView.setAdapter(mAdapter);
                         // 当前显示页加1
                         mPagingBean.addIndex();
                     }
@@ -107,5 +111,53 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener, Bas
     @Override
     public void onLoadMoreRequested() {
         // 加载更多
+        page("http://192.168.43.156/latte_index.json?index=");
+    }
+
+    private void page(final String path) {
+        // 获取页面的信息
+        int currentCount = mPagingBean.getCurrentCount();
+        int pageCount = mPagingBean.getPageCount();
+        int total = mPagingBean.getTotal();
+        final int currentPageIndex = mPagingBean.getCurrentPageIndex();
+
+        // 判断是否需要加载页面
+        if (mAdapter.getData().size() > pageCount || currentCount >= total) {
+            mAdapter.loadMoreEnd(true);
+        } else {
+            // 加载新的一页
+            MilkTea.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    RestClient.builder()
+                            .url(path + currentPageIndex)
+                            .success(new ISuccess() {
+                                @Override
+                                public void onSuccess(String response) {
+                                    // 数据转换
+                                    LinkedList<MultipleItemBean> convert = mDataCovert.setJson(response).convert();
+                                    // 填充数据
+                                    mAdapter.setNewData(convert);
+                                    // 累加数量
+                                    mPagingBean.setCurrentCount(mAdapter.getData().size());
+                                    // 更新完毕
+                                    mAdapter.loadMoreComplete();
+                                    // 更新数据
+                                    mPagingBean.addIndex();
+                                }
+                            })
+                            .failed(new IFailed() {
+                                @Override
+                                public void onFailed(Throwable t) {
+                                    MilkTeaLogger.e("Failed", "加载更多失败");
+                                }
+                            })
+                            .build()
+                            .get();
+                }
+            }, 1000);
+        }
+
+
     }
 }

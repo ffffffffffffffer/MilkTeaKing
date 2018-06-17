@@ -59,6 +59,10 @@ public class PagingBean {
         mLoadDelay = loadDelay;
     }
 
+    public int getCurrentPageIndex() {
+        return mCurrentPageIndex;
+    }
+
     /**
      *  用于加载更多时调用了
      */

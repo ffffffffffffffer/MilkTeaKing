@@ -1,6 +1,7 @@
 package com.milkteaking.core.app;
 
 import android.content.Context;
+import android.os.Handler;
 
 /**
  * @author TanJJ
@@ -40,5 +41,13 @@ public class MilkTea {
      */
     public static <T> T getConfigurate(Enum<ConfigType> key) {
         return Configurator.getInstance().getConfigurate(key);
+    }
+    /**
+     * 获取全局唯一的handle
+     *
+     * @return 返回全局的context
+     */
+    public static Handler getHandler() {
+        return Configurator.getInstance().getConfigurate(ConfigType.HANDLER);
     }
 }
