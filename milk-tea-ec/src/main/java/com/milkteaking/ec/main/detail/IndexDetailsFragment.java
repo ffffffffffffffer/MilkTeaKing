@@ -1,10 +1,13 @@
 package com.milkteaking.ec.main.detail;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.ContentFrameLayout;
 import android.support.v7.widget.Toolbar;
@@ -55,6 +58,8 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
     ConvenientBanner mConvenientBanner;
     @BindView(R2.id.frame_goods_info)
     ContentFrameLayout mContentFrameLayout;
+    @BindView(R2.id.tab_layout)
+    TabLayout mTabLayout;
 
     // toolbar部分
     @BindView(R2.id.test_toolbar)
@@ -106,6 +111,16 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
         mAppBarLayout.addOnOffsetChangedListener(this);
         // 初始化数据
         initData();
+        // 初始化tab布局
+        initTabLayout();
+    }
+
+    private void initTabLayout() {
+        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.we_chat_black));
+        mTabLayout.setTabTextColors(ColorStateList.valueOf(Color.BLACK));
+        mTabLayout.setBackgroundColor(Color.WHITE);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     private void initData() {
@@ -116,6 +131,7 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
                     public void onSuccess(String response) {
                         JSONObject data = JSON.parseObject(response).getJSONObject("data");
                         initBanner(data);
+                        initGoodsInfo(data);
                     }
                 })
                 .failed(new IFailed() {
@@ -126,6 +142,13 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
                 })
                 .build()
                 .get();
+    }
+
+    private void initGoodsInfo(JSONObject data) {
+        String dataInfo = data.toJSONString();
+        GoodsInfoDetailFragment goodsInfoDetailFragment = GoodsInfoDetailFragment.create(dataInfo);
+        // 将contentFragment填充进来
+        getSupportDelegate().loadRootFragment(R.id.frame_goods_info, goodsInfoDetailFragment);
     }
 
     @SuppressWarnings("unchecked")
