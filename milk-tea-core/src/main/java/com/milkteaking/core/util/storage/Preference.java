@@ -64,7 +64,7 @@ public final class Preference {
         return getAppPreference()
                 .getBoolean(key, false);
     }
-
+    // ------------------添加方法------------------------------
     public static void addCustomAppProfile(String key, String val) {
         getAppPreference()
                 .edit()
@@ -72,6 +72,7 @@ public final class Preference {
                 .apply();
     }
 
+    // ------------------添加方法------------------------------
     public static String getCustomAppProfile(String key) {
         return getAppPreference().getString(key, "");
     }

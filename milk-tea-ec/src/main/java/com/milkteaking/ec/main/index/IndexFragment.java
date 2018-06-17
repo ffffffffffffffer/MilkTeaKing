@@ -16,6 +16,7 @@ import com.milkteaking.core.fragments.bottom.BottomItemFragment;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
 import com.milkteaking.ec.constant.Constant;
+import com.milkteaking.ec.main.index.search.SearchFragment;
 import com.milkteaking.ui.recycler.BaseDividerDecoration;
 import com.milkteaking.ui.recycler.PagingBean;
 import com.milkteaking.ui.refresh.RefreshHandler;
@@ -30,7 +31,7 @@ import qiu.niorgai.StatusBarCompat;
  * @des 首页Fragment
  */
 
-public class IndexFragment extends BottomItemFragment {
+public class IndexFragment extends BottomItemFragment implements View.OnFocusChangeListener {
 
     @BindView(R2.id.index_srl)
     SwipeRefreshLayout mSrlIndex;
@@ -74,6 +75,7 @@ public class IndexFragment extends BottomItemFragment {
         initRefresh();
         initRecycler();
         mRefreshHandler.firstPage(Constant.INDEX);
+        mEtSearchIndex.setOnFocusChangeListener(this);
     }
 
     private void initRecycler() {
@@ -92,5 +94,12 @@ public class IndexFragment extends BottomItemFragment {
                 Color.BLUE
         );
         mSrlIndex.setProgressViewOffset(true, 120, 200);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            getParentFragment(0).getSupportDelegate().start(new SearchFragment());
+        }
     }
 }
