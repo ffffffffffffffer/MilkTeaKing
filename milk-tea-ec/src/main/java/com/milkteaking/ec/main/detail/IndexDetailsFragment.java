@@ -20,15 +20,21 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.daimajia.androidanimations.library.YoYo;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.milkteaking.core.fragments.MilkTeaFragment;
 import com.milkteaking.core.net.RestClient;
 import com.milkteaking.core.net.callback.IFailed;
 import com.milkteaking.core.net.callback.ISuccess;
+import com.milkteaking.core.ui.image.GlideApp;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
 import com.milkteaking.ec.constant.Constant;
 import com.milkteaking.ec.main.detail.tab.TabPagerAdapter;
+import com.milkteaking.ui.anotation.BezierAnimation;
+import com.milkteaking.ui.anotation.BezierUtil;
 import com.milkteaking.ui.banners.ImageHolderCreator;
 import com.milkteaking.ui.ui.widget.CircleTextView;
 
@@ -36,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
@@ -45,7 +53,8 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * @des 商品详情Fragment
  */
 
-public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayout.OnOffsetChangedListener {
+public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayout.OnOffsetChangedListener, BezierUtil
+        .AnimationListener {
     private static final String DETAIL_GOODS_TAG = "detail_goods_tag";
     private int mId;
     // 能折叠的布局
@@ -81,6 +90,12 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
     CircleTextView mCircleTextView;
     @BindView(R2.id.rl_add_shop_cart)
     RelativeLayout mRelativeLayoutAddShopCart;
+    @BindView(R2.id.icon_shop_cart)
+    IconTextView mIconShopCart;
+    // 添加购物车时动画显示的图片
+    private String mThumbImageUrl;
+    // 购物车数量
+    private int mShopCartCount;
 
     public static IndexDetailsFragment create(int id) {
         Bundle arguments = new Bundle();
@@ -88,6 +103,28 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
         IndexDetailsFragment indexDetailsFragment = new IndexDetailsFragment();
         indexDetailsFragment.setArguments(arguments);
         return indexDetailsFragment;
+    }
+
+    @OnClick(R2.id.rl_add_shop_cart)
+    public void clickAddShopCart() {
+        CircleImageView imageView = new CircleImageView(getContext());
+        // 这个限制了图片的大小
+        RequestOptions options = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .dontAnimate()
+                .override(100, 100);
+        // 加载图片
+        GlideApp.with(getContext())
+                .load(mThumbImageUrl)
+                .apply(options)
+                .into(imageView);
+
+        /*
+            start: 从那个View开始移动
+            end:   移动到那个view停止消失
+         */
+        BezierAnimation.addCart(this, mRelativeLayoutAddShopCart, mIconShopCart, imageView, this);
     }
 
     @Override
@@ -114,6 +151,8 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
         initData();
         // 初始化tab布局
         initTabLayout();
+        // 设置购物车的原形textView为红色
+        mCircleTextView.setCircleBackgroundColor(Color.RED);
     }
 
     private void initTabLayout() {
@@ -134,6 +173,7 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
                         initBanner(data);
                         initGoodsInfo(data);
                         initViewPager(data);
+                        setShopCartCount(data);
                     }
                 })
                 .failed(new IFailed() {
@@ -186,5 +226,41 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
+    }
+
+    public void setShopCartCount(JSONObject shopCartCount) {
+        mThumbImageUrl = shopCartCount.getString("thumb");
+        if (mShopCartCount == 0) {
+            mCircleTextView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onAnimationEnd() {
+        // 比例放大动画
+        YoYo.with(new ScaleUpAnimator())
+                .duration(5000)
+                .playOn(mIconShopCart);
+        mCircleTextView.setVisibility(View.GONE);
+        mCircleTextView.setText(String.valueOf(2));
+        RestClient.builder()
+                // http://服务器地址/add_shop_cart_count
+                .url(Constant.INDEX)
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        mShopCartCount++;
+                        mCircleTextView.setVisibility(View.VISIBLE);
+                        mCircleTextView.setText(String.valueOf(mShopCartCount));
+                    }
+                })
+                .failed(new IFailed() {
+                    @Override
+                    public void onFailed(Throwable t) {
+                        ToastUtils.showShort(t.getMessage());
+                    }
+                })
+                .build()
+                .get();
     }
 }

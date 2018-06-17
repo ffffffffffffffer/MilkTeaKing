@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
@@ -38,8 +39,16 @@ public class CircleTextView extends AppCompatTextView {
         mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
     }
 
+    public void setCircleBackgroundColor(@ColorInt int color) {
+        mPaint.setColor(color);
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // ------------start---------------
+        // 没有加这个居然不显示自定义的圆圈
+        // ------------end---------------
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredWidth = getMeasuredWidth();
         int maxHeight = getMaxHeight();
 
@@ -54,6 +63,10 @@ public class CircleTextView extends AppCompatTextView {
         // 设置画板过滤
         canvas.setDrawFilter(mDrawFilter);
         // 画圆
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, Math.max(getWidth(), getHeight() / 2), mPaint);
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, Math.max(getWidth()/2, getHeight() / 2), mPaint);
+        // ------------start---------------
+        // 没有加这个居然不显示自定义的圆圈,并且要放在最后才有效
+        // ------------end---------------
+        super.onDraw(canvas);
     }
 }

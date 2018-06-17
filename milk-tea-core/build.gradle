@@ -105,4 +105,8 @@ dependencies {
     compile 'com.github.yalantis:ucrop:2.2.1-native'
     // 条形码可扩展扫描库
     compile 'me.dm7.barcodescanner:zbar:1.9.8'
+    // View动画
+    compile 'com.nineoldandroids:library:2.4.0' // Jake Wharton大神已经对这个库标注过期了,引入是为了兼容低版本
+    compile 'com.daimajia.easing:library:2.1@aar' // 引用的是AndroidViewAnimations这个库
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
 }
