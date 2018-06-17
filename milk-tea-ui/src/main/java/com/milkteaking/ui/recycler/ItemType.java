@@ -18,4 +18,6 @@ public class ItemType {
     public static final int SORT_MENU_LIST = 4;
     // 购物车item样式
     public static final int SHOP_CAR_LIST = 5;
+    // 商品详情Image的item样式
+    public static final int SINGLE_BIG_IMAGE = 6;
 }

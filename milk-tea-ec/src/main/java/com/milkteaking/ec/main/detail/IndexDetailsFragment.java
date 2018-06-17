@@ -28,6 +28,7 @@ import com.milkteaking.core.net.callback.ISuccess;
 import com.milkteaking.ec.R;
 import com.milkteaking.ec.R2;
 import com.milkteaking.ec.constant.Constant;
+import com.milkteaking.ec.main.detail.tab.TabPagerAdapter;
 import com.milkteaking.ui.banners.ImageHolderCreator;
 import com.milkteaking.ui.ui.widget.CircleTextView;
 
@@ -132,6 +133,7 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
                         JSONObject data = JSON.parseObject(response).getJSONObject("data");
                         initBanner(data);
                         initGoodsInfo(data);
+                        initViewPager(data);
                     }
                 })
                 .failed(new IFailed() {
@@ -142,6 +144,11 @@ public class IndexDetailsFragment extends MilkTeaFragment implements AppBarLayou
                 })
                 .build()
                 .get();
+    }
+
+    private void initViewPager(JSONObject data) {
+        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getFragmentManager(), data);
+        mViewPager.setAdapter(pagerAdapter);
     }
 
     private void initGoodsInfo(JSONObject data) {
